@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
-import { Items, Series, Categories, Boxes, Positions, Shelves, Sections, Blocks, Warehouses } from '../../lib/collections';
+import { Items, Series, Categories, Boxes, Shelves, Sections, Blocks, Warehouses } from '../../lib/collections';
 
 export default function () {
   Meteor.publishComposite('getItem', (filter) => ({
@@ -22,13 +22,10 @@ export default function () {
             find(series) {
               return Categories.find({ _id: series.categoryId });
             },
-            find(box) {
-              return Positions.find({ _id: box.positionId });
-            },
             children: [
               {
-                find(position) {
-                  return Shelves.find({ _id: position.shelfId });
+                find(box) {
+                  return Shelves.find({ _id: box.shelfId });
                 },
                 children: [
                   {
