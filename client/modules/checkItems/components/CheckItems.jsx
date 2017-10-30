@@ -2,7 +2,6 @@ import React from 'react';
 import {
   FormStyled,
   PageStyled,
-  TitleAccountStyled,
   FormBlockStyled,
   FormGroupStyled,
   LineFormStyled,
@@ -19,7 +18,7 @@ export default class Profile extends React.Component {
     };
   }
 
-  handleInput = (e) => {
+  handleInput = () => {
     const { search } = this.props;
     const searchTerm = this.search.value.trim();
     const filter = {
@@ -38,6 +37,7 @@ export default class Profile extends React.Component {
 
   render() {
     const { selectedOptions } = this.state;
+    const { items, series, categories, positions, shelves, blocks, sections, warehouses } = this.props;
 
     return (
       <FormStyled>
@@ -59,6 +59,53 @@ export default class Profile extends React.Component {
                 </select>
               </LineFormStyled>
             </FormGroupStyled>
+            {
+              items.map((item, index) =>
+                <FormBlockStyled key={item._id}>
+                  <TitleFormStyled>{item.name}</TitleFormStyled>
+                  <FormBlockStyled>
+                    <FormGroupStyled>
+                      <TitleFormStyled>Series: </TitleFormStyled>
+                      <span>{series[index]}</span>
+                    </FormGroupStyled>
+                    <FormGroupStyled>
+                      <TitleFormStyled>Category: </TitleFormStyled>
+                      {
+                        categories[index].map((category, i) =>
+                          <span key={category._id}>
+                            {category.name}{i === categories[index].length - 1 ? '' : ','}
+                          </span>
+                        )
+                      }
+                    </FormGroupStyled>
+                    <FormGroupStyled>
+                      <TitleFormStyled>Author: </TitleFormStyled>
+                      <span>{series[index].author}</span>
+                    </FormGroupStyled>
+                    <FormGroupStyled>
+                      <TitleFormStyled>Quantity: </TitleFormStyled>
+                      <span>{item.quantity}</span>
+                    </FormGroupStyled>
+                    <FormGroupStyled>
+                      <TitleFormStyled>Position: </TitleFormStyled>
+                      {
+                        warehouses[index].map((warehouse, i) =>
+                          <spann key={warehouse._id}>
+                            Warehouse {warehouse.name}, Section {sections[index][i]},
+                            Block {blocks[index][i]}, Shelf {shelves[index][i]},
+                            Position {positions[index].map(position =>
+                              <span key={position._id}>
+                                Row {position.row}, Column {position.column}
+                              </span>
+                            )}
+                          </spann>
+                        )
+                      }
+                    </FormGroupStyled>
+                  </FormBlockStyled>
+                </FormBlockStyled>
+              )
+            }
           </FormBlockStyled>
         </PageStyled>
       </FormStyled>

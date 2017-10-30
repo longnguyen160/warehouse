@@ -6,9 +6,8 @@ import createHistory from 'history/createBrowserHistory';
 import ReactDOM from 'react-dom';
 import MainLayout from './containers/MainLayout';
 import SignIn from '../account/containers/SignIn';
-import SignUp from '../account/containers/SignUp';
 import HomePage from './components/HomePage';
-import Profile from '../checkItems/components/CheckItems';
+import CheckItems from '../checkItems/containers/CheckItems';
 import Chat from '../chat/containers/Chat';
 
 export default function (injectDeps) {
@@ -28,7 +27,7 @@ export default function (injectDeps) {
                   <Route
                     path='/checkItems'
                     render={() => (
-                      <Profile/>
+                      <CheckItems/>
                     )}
                   />
                   <Route

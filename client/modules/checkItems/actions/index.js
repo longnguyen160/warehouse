@@ -1,5 +1,5 @@
-import selectOption from './selectOption';
+import checkItems from './checkItems';
 
 export default {
-  selectOption
+  checkItems
 }
