@@ -512,7 +512,7 @@ Meteor.startup(function () {
       }
       itemIds.push(Items.insert(item));
       item = {
-        seriesId: seriIds[1],
+        seriesId: seriIds[2],
         boxId: [ boxIds[63] ],
         ISBN: "987-604-2-07117-8",
         quantity: 100,
@@ -524,7 +524,7 @@ Meteor.startup(function () {
       }
       itemIds.push(Items.insert(item));
       item = {
-        seriesId: seriIds[1],
+        seriesId: seriIds[2],
         boxId: [ boxIds[64] ],
         ISBN: "987-604-2-07118-5",
         quantity: 100,
@@ -536,7 +536,7 @@ Meteor.startup(function () {
       }
       itemIds.push(Items.insert(item));
       item = {
-        seriesId: seriIds[1],
+        seriesId: seriIds[2],
         boxId: [ boxIds[65] ],
         ISBN: "987-604-2-08727-8",
         quantity: 100,
