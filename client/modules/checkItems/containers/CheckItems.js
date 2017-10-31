@@ -1,9 +1,9 @@
 import { useDeps, composeAll, composeWithTracker } from 'mantra-core';
-import Profile from '../components/CheckItems';
+import CheckItems from '../components/CheckItems';
 
 export const composer = ({ context, clearErrors }, onData) => {
   const { LocalState, Collections } = context();
-  const option = LocalState.get('OPTION');
+  const option = LocalState.get('OPTION') || '0';
   const filter = LocalState.get('SEARCH_TEXT') || {};
   let items = [], series = [], boxes = [], categories = [], positions = [], shelves = [], blocks = [], sections = [], warehouses = [];
 
@@ -21,11 +21,7 @@ export const composer = ({ context, clearErrors }, onData) => {
         categories = categoryIds.map(categoryId =>
           Collections.Categories.find({ _id: { $in: categoryId } }).fetch()
         )
-        const positionIds = boxes.map(box => box.map(element => element.positionId));
-        positions = positionIds.map(positionId =>
-          Collections.Positions.find({ _id: { $in: positionId } }).fetch()
-        );
-        const shelfIds = series.map(series => series.shelfId);
+        const shelfIds = boxes.map(box => box.shelfId);
         shelves = shelfIds.map(shelfId =>
           Collections.Shelves.find({ _id: { $in: shelfId } }).fetch()
         );
@@ -55,6 +51,7 @@ export const composer = ({ context, clearErrors }, onData) => {
 
 export const depsMapper = (context, actions) => ({
   selectOption: actions.checkItems.selectOption,
+  search: actions.checkItems.search,
   clearErrors: actions.checkItems.clearErrors,
   context: () => context
 });
@@ -62,4 +59,4 @@ export const depsMapper = (context, actions) => ({
 export default composeAll(
   composeWithTracker(composer),
   useDeps(depsMapper)
-)(Profile);
+)(CheckItems);

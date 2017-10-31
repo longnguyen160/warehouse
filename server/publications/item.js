@@ -12,16 +12,22 @@ export default function () {
     children: [
       {
         find(item) {
-          return Series.find({ _id: item.seriesId });
+          return Series.find({_id: item.seriesId});
         },
+        children: [
+          {
+            find(series) {
+              return Categories.find({_id: series.categoryId});
+            }
+          }
+        ]
+      },
+      {
         find(item) {
           return Boxes.find({ _id: item.boxId });
         },
         children: [
           {
-            find(series) {
-              return Categories.find({ _id: series.categoryId });
-            },
             children: [
               {
                 find(box) {

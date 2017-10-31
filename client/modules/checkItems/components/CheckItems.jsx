@@ -9,7 +9,7 @@ import {
   Input
 } from '../../../stylesheets/GeneralStyled';
 
-export default class Profile extends React.Component {
+export default class CheckItems extends React.Component {
 
   constructor(props) {
     super(props);
@@ -18,7 +18,8 @@ export default class Profile extends React.Component {
     };
   }
 
-  handleInput = () => {
+  handleInput = (e) => {
+    e.preventDefault();
     const { search } = this.props;
     const searchTerm = this.search.value.trim();
     const filter = {
@@ -48,8 +49,8 @@ export default class Profile extends React.Component {
                 <Input
                   type='text'
                   placeholder={selectedOptions === '0' ? 'Item code or series volume...' : 'Series...'}
-                  ref={(c) => { this.search = c; }}
-                  onChange={(e) => this.handleInput}
+                  innerRef={(c) => { this.search = c; }}
+                  onChange={this.handleInput}
                 />
               </LineFormStyled>
               <LineFormStyled alignCenter>

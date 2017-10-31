@@ -13,7 +13,7 @@ const HomePage = () => {
       <LineFormStyled marginBottom alignCenter>
         <Link to="/checkItems">
           <Button hasBorder dashboard>
-            <i className="fa fa-check"></i>
+            <i className="fa fa-check"/>
             Check Items
           </Button>
         </Link>
@@ -21,7 +21,7 @@ const HomePage = () => {
       <LineFormStyled marginBottom alignCenter>
         <Link to="/stockIn">
           <Button hasBorder dashboard>
-            <i className="fa fa-download"></i>
+            <i className="fa fa-download"/>
             Stock in
           </Button>
         </Link>
@@ -29,7 +29,7 @@ const HomePage = () => {
       <LineFormStyled marginBottom alignCenter>
         <Link to="/stockOut">
           <Button hasBorder dashboard>
-            <i className="fa fa-upload"></i>
+            <i className="fa fa-upload"/>
             Stock out
           </Button>
         </Link>
@@ -37,7 +37,7 @@ const HomePage = () => {
       <LineFormStyled marginBottom alignCenter>
         <Link to="/printReport">
           <Button hasBorder dashboard>
-            <i className="fa fa-print"></i>
+            <i className="fa fa-print"/>
             Print report
           </Button>
         </Link>

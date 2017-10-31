@@ -27,14 +27,14 @@ export default function (injectDeps) {
                   <Route
                     path='/checkItems'
                     render={() => (
-                      <CheckItems/>
+                      <CheckItems history={history}/>
                     )}
                   />
                   <Route
                     path='/'
                     exact
                     render={() => (
-                      <HomePage/>
+                      <HomePage />
                     )}
                   />
                   <Route

@@ -14,8 +14,5 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 25 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="meteor-packages-auto-import-npm" level="project" />
-    <orderEntry type="library" name="meteor-packages-auto-import-browser" level="project" />
-    <orderEntry type="library" name="meteor-packages-auto-import-npm" level="project" />
   </component>
 </module>
