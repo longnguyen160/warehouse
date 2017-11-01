@@ -24,156 +24,132 @@ Meteor.startup(function () {
     }
   };
   const InsertData = () => {
-    let office = Offices.findOne();
-    let officeId = office ? office._id : '';
+    let warehouses = Warehouses.find().fetch();
+    let warehouseIds = warehouses.map(warehouse => warehouse._id);
 
-    if (!office) {
-      office = {
-        name: 'Joestar',
-        address: '136/2 Tô Ký'
-      }
-      officeId = Offices.insert(office);
-    }
-    let warehouse = Warehouses.findOne();
-    let warehouseId = warehouse ? warehouse._id : '';
-
-    if (!warehouse) {
-      warehouse = {
+    if (warehouses.length === 0) {
+      let warehouse = {
         name: 'W1',
-        officeId,
         address: '38/6K Nguyễn Văn Trỗi'
       }
-      warehouseId = Warehouses.insert(warehouse);
+      warehouseIds.push(Warehouses.insert(warehouse));
+      warehouse = {
+        name: 'W2',
+        address: '136/2 Tô Ký'
+      }
+      warehouseIds.push(Warehouses.insert(warehouse));
     }
 
     let sections = Sections.find().fetch();
-    let sectionIds = sections ? sections.map(section => section._id) : [];
+    let sectionIds = sections.length > 0 ? sections.map(section => section._id) : [];
 
     if (sections.length === 0) {
-      section = {
-        name: 'SA',
-        warehouseId
-      }
-      sectionIds.push(Sections.insert(section));
-      section = {
-        name: 'SB',
-        warehouseId
-      }
-      sectionIds.push(Sections.insert(section));
-      section = {
-        name: 'SC',
-        warehouseId
-      }
-      sectionIds.push(Sections.insert(section));
-      section = {
-        name: 'SD',
-        warehouseId
-      }
-      sectionIds.push(Sections.insert(section));
+      warehouses.forEach((warehouse) => {
+        let section = {
+          name: 'SA',
+          warehouseId: warehouse._id,
+        }
+        sectionIds.push(Sections.insert(section));
+        section = {
+          name: 'SB',
+          warehouseId: warehouse._id,
+        }
+        sectionIds.push(Sections.insert(section));
+        section = {
+          name: 'SC',
+          warehouseId: warehouse._id,
+        }
+        sectionIds.push(Sections.insert(section));
+        section = {
+          name: 'SD',
+          warehouseId: warehouse._id,
+        }
+        sectionIds.push(Sections.insert(section));
+      });
     }
 
     let categories = Categories.find().fetch();
     let categoryIds = categories ? categories.map(category => category._id) : [];
 
     if (categories.length === 0) {
-      category = {
+      let category = {
         name: 'Action',
-        sectionId: sectionIds[0],
       }
       categoryIds.push(Categories.insert(category));
       category = {
         name: 'Adventure',
-        sectionId: sectionIds[0],
       }
       categoryIds.push(Categories.insert(category));
       category = {
         name: 'Fantasy',
-        sectionId: sectionIds[0],
       }
       categoryIds.push(Categories.insert(category));
       category = {
         name: 'Martial Arts',
-        sectionId: sectionIds[0],
       }
       categoryIds.push(Categories.insert(category));
       category = {
         name: 'Sci-fi',
-        sectionId: sectionIds[0],
       }
       categoryIds.push(Categories.insert(category));
       category = {
         name: 'Comedy',
-        sectionId: sectionIds[1],
       }
       categoryIds.push(Categories.insert(category));
       category = {
         name: 'Drama',
-        sectionId: sectionIds[1],
       }
       categoryIds.push(Categories.insert(category));
       category = {
         name: 'Slice of Life',
-        sectionId: sectionIds[1],
       }
       categoryIds.push(Categories.insert(category));
       category = {
         name: 'Romance',
-        sectionId: sectionIds[1],
       }
       categoryIds.push(Categories.insert(category));
       category = {
         name: 'School Life',
-        sectionId: sectionIds[1],
       }
       categoryIds.push(Categories.insert(category));
       category = {
         name: 'Shounen',
-        sectionId: sectionIds[1],
       }
       categoryIds.push(Categories.insert(category));
       category = {
         name: 'Horror',
-        sectionId: sectionIds[2],
       }
       categoryIds.push(Categories.insert(category));
       category = {
         name: 'Supernatural',
-        sectionId: sectionIds[2],
       }
       categoryIds.push(Categories.insert(category));
       category = {
         name: 'Tragedy',
-        sectionId: sectionIds[2],
       }
       categoryIds.push(Categories.insert(category));
       category = {
         name: 'Detective',
-        sectionId: sectionIds[2],
       }
       categoryIds.push(Categories.insert(category));
       category = {
         name: 'Harem',
-        sectionId: sectionIds[3],
       }
       categoryIds.push(Categories.insert(category));
       category = {
         name: 'Ecchi',
-        sectionId: sectionIds[3],
       }
       categoryIds.push(Categories.insert(category));
       category = {
         name: 'Loli',
-        sectionId: sectionIds[3],
       }
       categoryIds.push(Categories.insert(category));
       category = {
         name: 'Yaoi',
-        sectionId: sectionIds[3],
       }
       categoryIds.push(Categories.insert(category));
       category = {
         name: 'Yuri',
-        sectionId: sectionIds[3],
       }
       categoryIds.push(Categories.insert(category));
     }
@@ -183,7 +159,7 @@ Meteor.startup(function () {
 
     if (blocks.length === 0) {
       sectionIds.forEach((sectionId) => {
-        block = {
+        let block = {
           name: 'B1',
           sectionId
         }
@@ -211,7 +187,7 @@ Meteor.startup(function () {
 
     if (shelves.length === 0) {
       blockIds.forEach((blockId) => {
-        shelve = {
+        let shelve = {
           name: 'SH1',
           blockId
         }
@@ -238,7 +214,7 @@ Meteor.startup(function () {
 
     if (boxes.length === 0) {
       shelveIds.forEach((shelveId) => {
-        box = {
+        let box = {
           name: 'BO1',
           shelveId,
           rowId: 1,
@@ -405,31 +381,31 @@ Meteor.startup(function () {
     let seriIds = Series ? series.map(seri => seri._id) : [];
 
     if (series.length === 0) {
-      seri = {
+      let seri = {
         name: "Kết Giới Sư",
         author: "Yellow TANABE",
-        shelfId: [ shelveIds[0], shelveIds[1], shelveIds[2] ],
+        shelfId: [[shelveIds[0], shelveIds[1], shelveIds[2]]],
         publishYear: "2004",
         publisher: "SHOUGAKUKAN",
-        categoryId: [ categoryIds[0], categoryIds[1], categoryIds[2] ]
+        categoryId: [categoryIds[0], categoryIds[1], categoryIds[2]]
       }
       seriIds.push(Series.insert(seri));
       seri = {
         name: "ONE-PUNCH MAN",
         author: "ONE, Yusuke Murata",
-        shelfId: [ shelveIds[34], shelveIds[35] ],
+        shelfId: [[shelveIds[34], shelveIds[35]]],
         publishYear: "2004",
         publisher: "SHOUGAKUKAN",
-        categoryId: [ categoryIds[12] ]
+        categoryId: [categoryIds[12]]
       }
       seriIds.push(Series.insert(seri));
       seri = {
         name: "ONE PIECE",
         author: "Eiichiro Oda",
-        shelfId: [ shelveIds[3], shelveIds[4], shelveIds[5], shelveIds[6], shelveIds[7] ],
+        shelfId: [[shelveIds[65], shelveIds[66]]],
         publishYear: "1997",
         publisher: "SHUEISHA",
-        categoryId: [ categoryIds[0], categoryIds[1], categoryIds[2] ]
+        categoryId: [categoryIds[0], categoryIds[1], categoryIds[2]]
       }
       seriIds.push(Series.insert(seri));
     }
@@ -438,10 +414,15 @@ Meteor.startup(function () {
     let items = Items.find().fetch();
     let itemIds = items ? items.map(item => item._id) : [];
 
+
     if (items.length === 0) {
-      item = {
+      let item = {
+        warehouseId: warehouseIds[0],
+        sectionId: sectionIds[0],
+        blockId: blockIds[0],
+        shelfId: shelveIds[0],
+        boxId: [boxIds[0]],
         seriesId: seriIds[0],
-        boxId: [ boxIds[0] ],
         ISBN: "987-604-2-08812-1",
         quantity: 100,
         size: "11,3 x 17,6",
@@ -451,9 +432,14 @@ Meteor.startup(function () {
         name: "Kết Giới Sư 20"
       }
       itemIds.push(Items.insert(item));
+      Boxes.update({ _id: boxIds[0] }, { $set: { currentQuantity: 100 } });
       item = {
+        warehouseId: warehouseIds[0],
+        sectionId: sectionIds[0],
+        blockId: blockIds[0],
+        shelfId: shelveIds[0],
+        boxId: [boxIds[1]],
         seriesId: seriIds[0],
-        boxId: [ boxIds[1] ],
         ISBN: "987-604-2-08813-8",
         quantity: 100,
         size: "11,3 x 17,6",
@@ -463,21 +449,31 @@ Meteor.startup(function () {
         name: "Kết Giới Sư 21"
       }
       itemIds.push(Items.insert(item));
+      Boxes.update({ _id: boxIds[1] }, { $set: { currentQuantity: 100 } });
       item = {
+        warehouseId: warehouseIds[0],
+        sectionId: sectionIds[0],
+        blockId: blockIds[0],
+        shelfId: shelveIds[0],
+        boxId: [boxIds[0]],
         seriesId: seriIds[0],
-        boxId: [ boxIds[0] ],
         ISBN: "987-604-2-08814-5",
         quantity: 100,
         size: "11,3 x 17,6",
         edition: "TANKOUBON",
         price: 18000,
-        code: "W1SAB1SH1BO3",
+        code: "W1SAB1SH1BO1",
         name: "Kết Giới Sư 22"
       }
       itemIds.push(Items.insert(item));
+      Boxes.update({ _id: boxIds[0] }, { $set: { currentQuantity: 200 } });
       item = {
+        warehouseId: warehouseIds[0],
+        sectionId: sectionIds[2],
+        blockId: blockIds[8],
+        shelfId: shelveIds[34],
+        boxId: [boxIds[553]],
         seriesId: seriIds[1],
-        boxId: [ boxIds[553] ],
         ISBN: "987-604-2-08909-8",
         quantity: 100,
         size: "11,3 x 17,6",
@@ -487,9 +483,14 @@ Meteor.startup(function () {
         name: "ONE-PUNCH MAN 11"
       }
       itemIds.push(Items.insert(item));
+      Boxes.update({ _id: boxIds[553] }, { $set: { currentQuantity: 100 } });
       item = {
+        warehouseId: warehouseIds[0],
+        sectionId: sectionIds[2],
+        blockId: blockIds[8],
+        shelfId: shelveIds[34],
+        boxId: [boxIds[554]],
         seriesId: seriIds[1],
-        boxId: [ boxIds[554] ],
         ISBN: "987-604-2-08910-4",
         quantity: 100,
         size: "11,3 x 17,6",
@@ -499,9 +500,14 @@ Meteor.startup(function () {
         name: "ONE-PUNCH MAN 12"
       }
       itemIds.push(Items.insert(item));
+      Boxes.update({ _id: boxIds[554] }, { $set: { currentQuantity: 100 } });
       item = {
+        warehouseId: warehouseIds[0],
+        sectionId: sectionIds[2],
+        blockId: blockIds[8],
+        shelfId: shelveIds[34],
+        boxId: [boxIds[555]],
         seriesId: seriIds[1],
-        boxId: [ boxIds[555] ],
         ISBN: "987-604-2-08911-1",
         quantity: 100,
         size: "11,3 x 17,6",
@@ -511,42 +517,58 @@ Meteor.startup(function () {
         name: "ONE-PUNCH MAN 13"
       }
       itemIds.push(Items.insert(item));
+      Boxes.update({ _id: boxIds[555] }, { $set: { currentQuantity: 100 } });
       item = {
+        warehouseId: warehouseIds[1],
+        sectionId: sectionIds[5],
+        blockId: blockIds[17],
+        shelfId: shelveIds[65],
+        boxId: [boxIds[1024]],
         seriesId: seriIds[2],
-        boxId: [ boxIds[63] ],
         ISBN: "987-604-2-07117-8",
         quantity: 100,
         size: "11,3 x 17,6",
         edition: "TANKOUBON",
         price: 19500,
-        code: "W1SCB9SH4B64",
+        code: "W1SAB1SH4B64",
         name: "ONE PIECE 75"
       }
       itemIds.push(Items.insert(item));
+      Boxes.update({ _id: boxIds[1024] }, { $set: { currentQuantity: 100 } });
       item = {
+        warehouseId: warehouseIds[1],
+        sectionId: sectionIds[5],
+        blockId: blockIds[17],
+        shelfId: shelveIds[65],
+        boxId: [boxIds[1025]],
         seriesId: seriIds[2],
-        boxId: [ boxIds[64] ],
         ISBN: "987-604-2-07118-5",
         quantity: 100,
         size: "11,3 x 17,6",
         edition: "TANKOUBON",
         price: 19500,
-        code: "W1SCB9SH4B65",
+        code: "W1SAB1SH4B65",
         name: "ONE PIECE 76"
       }
       itemIds.push(Items.insert(item));
+      Boxes.update({ _id: boxIds[1025] }, { $set: { currentQuantity: 100 } });
       item = {
+        warehouseId: warehouseIds[1],
+        sectionId: sectionIds[5],
+        blockId: blockIds[17],
+        shelfId: shelveIds[65],
+        boxId: [boxIds[1026]],
         seriesId: seriIds[2],
-        boxId: [ boxIds[65] ],
         ISBN: "987-604-2-08727-8",
         quantity: 100,
         size: "11,3 x 17,6",
         edition: "TANKOUBON",
         price: 19500,
-        code: "W1SCB9SH4B66",
+        code: "W1SAB1SH4B66",
         name: "ONE PIECE 77"
       }
       itemIds.push(Items.insert(item));
+      Boxes.update({ _id: boxIds[1026] }, { $set: { currentQuantity: 100 } });
     }
   };
 
