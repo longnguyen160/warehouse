@@ -66,6 +66,7 @@ export const PageCustomStyled = styled.div`
   ${props => props.chatBox && css`
     padding: 10px 0;
     max-width: 100%;    
+    height: 100%;
     overflow-x: hidden;
     overflow-y: auto;  
     -webkit-overflow-scrolling: touch;
@@ -94,11 +95,32 @@ export const FormBlockStyled = styled.div`
   ${props => props.fullWidth && css`
     width: 100%;    
   `}
+  ${props => props.margin && css`
+    margin: 6px;
+    display: block;
+  `}
+  ${props => (props.hidden && props.hidden === false) ?
+    css`
+      transform: translate(0, 0);
+      opacity: 1;      
+      visibility: visible;
+    `
+  : (props.hidden && props.hidden === true) ?
+    css`
+      transform: translate(0, -100%);
+      height: 0;
+      opacity: 0;      
+      visibility: hidden;
+    ` : null
+  }
 `;
 
 export const FormGroupStyled = styled.div`
   display: flex;
   font-size: 13px;
+  span {
+    margin-right: 5px;
+  }
   ${props => props.right && css`
     justify-content: flex-end;
   `};
@@ -237,28 +259,12 @@ export const LineFormStyled = styled.div`
 export const TitleFormStyled = styled.span`
   margin-bottom: 5px;
   font-weight: 600;
-  ${props => props.question && css`
-    font-size: 17px;
-    color: #026a95;
-  `}
-  ${props => props.nameService && css`
-    font-size: 23px;
-  `}
-  ${props => props.description && css`
-    font-size: 20px;
-    font-weight: 300;
+  ${props => props.flex && css`
+    flex: 1;
   `}
   ${props => props.price && css`
     font-size: 20px;
     color: #026a95;    
-  `}
-  ${props => props.duration && css`
-    font-size: 20px;
-    color: #fe8f00;    
-  `}
-  ${props => props.divide && css`
-    font-size: 20px;
-    margin: 0 5px;    
   `}
 `;
 

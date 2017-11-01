@@ -44,25 +44,25 @@ Meteor.startup(function () {
     let sectionIds = sections.length > 0 ? sections.map(section => section._id) : [];
 
     if (sections.length === 0) {
-      warehouses.forEach((warehouse) => {
+      warehouseIds.forEach((warehouse, warehouseId) => {
         let section = {
           name: 'SA',
-          warehouseId: warehouse._id,
+          warehouseId
         };
         sectionIds.push(Sections.insert(section));
         section = {
           name: 'SB',
-          warehouseId: warehouse._id,
+          warehouseId
         };
         sectionIds.push(Sections.insert(section));
         section = {
           name: 'SC',
-          warehouseId: warehouse._id,
+          warehouseId
         };
         sectionIds.push(Sections.insert(section));
         section = {
           name: 'SD',
-          warehouseId: warehouse._id,
+          warehouseId
         };
         sectionIds.push(Sections.insert(section));
       });
@@ -187,26 +187,26 @@ Meteor.startup(function () {
 
     if (shelves.length === 0) {
       blockIds.forEach((blockId) => {
-        let shelf = {
+        let shelve = {
           name: 'SH1',
           blockId
         };
-        shelfIds.push(Shelves.insert(shelf));
-        shelf = {
+        shelfIds.push(Shelves.insert(shelve));
+        shelve = {
           name: 'SH2',
           blockId
         };
-        shelfIds.push(Shelves.insert(shelf));
-        shelf = {
+        shelfIds.push(Shelves.insert(shelve));
+        shelve = {
           name: 'SH3',
           blockId
         };
-        shelfIds.push(Shelves.insert(shelf));
-        shelf = {
+        shelfIds.push(Shelves.insert(shelve));
+        shelve = {
           name: 'SH4',
           blockId
         };
-        shelfIds.push(Shelves.insert(shelf));
+        shelfIds.push(Shelves.insert(shelve));
       });
     }
     let boxes = Boxes.find().fetch();

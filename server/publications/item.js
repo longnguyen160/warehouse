@@ -12,52 +12,40 @@ export default function () {
     children: [
       {
         find(item) {
-          return Series.find({_id: item.seriesId});
+          return Series.find({ _id: item.seriesId });
         },
         children: [
           {
             find(series) {
-              return Categories.find({_id: series.categoryId});
+              return Categories.find({ _id: {$in: series.categoryId } });
             }
           }
         ]
       },
       {
         find(item) {
-          return Boxes.find({ _id: item.boxId });
-        },
-        children: [
-          {
-            children: [
-              {
-                find(box) {
-                  return Shelves.find({ _id: box.shelfId });
-                },
-                children: [
-                  {
-                    find(shelf) {
-                      return Blocks.find({ _id: shelf.blockId });
-                    },
-                    children: [
-                      {
-                        find(block) {
-                          return Sections.find({ _id: block.sectionId });
-                        },
-                        children: [
-                          {
-                            find(section) {
-                              return Warehouses.find({ _id: section.warehouseId });
-                            }
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ]
+          return Boxes.find({ _id: { $in: item.boxId } });
+        }
+      },
+      {
+        find(item) {
+          return Shelves.find({ _id: item.shelfId });
+        }
+      },
+      {
+        find(item) {
+          return Blocks.find({ _id: item.blockId });
+        }
+      },
+      {
+        find(item) {
+          return Sections.find({ _id: item.sectionId });
+        }
+      },
+      {
+        find(item) {
+          return Warehouses.find({ _id: item.warehouseId });
+        }
       }
     ]
   }));
