@@ -14,8 +14,9 @@ export default class Modal extends React.Component {
     const { isOpen } = this.props;
 
     return (
-      <MyModal onClick={this.closeModal}
-               isOpen={isOpen}
+      <MyModal
+        onClick={this.closeModal}
+        isOpen={isOpen}
       >
         <ModalContent onClick={this.clickModal}>
           {this.props.children}

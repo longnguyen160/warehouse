@@ -8,7 +8,7 @@ import MainLayout from './containers/MainLayout';
 import SignIn from '../account/containers/SignIn';
 import HomePage from './components/HomePage';
 import CheckItems from '../checkItems/containers/CheckItems';
-import Chat from '../chat/containers/Chat';
+import StockIn from '../stockIn/components/StockIn';
 
 export default function (injectDeps) {
   const MainLayoutCtx = injectDeps(MainLayout);
@@ -38,15 +38,10 @@ export default function (injectDeps) {
                     )}
                   />
                   <Route
-                    path='/chat/:userId?'
-                    render={({ match }) => {
-                      if (match.params.userId) {
-                        return (
-                          <Chat userId={match.params.userId}/>
-                        );
-                      }
-                      return (<Chat/>);
-                    }}
+                    path='/stockIn'
+                    render={() =>
+                      <StockIn />
+                    }
                   />
                 </Switch>
               </MainLayoutCtx>

@@ -5,7 +5,7 @@ import initContext from './configs/context';
 import coreModule from './modules/core';
 import accountModule from './modules/account';
 import checkItemsModule from './modules/checkItems';
-import chatModule from './modules/chat';
+import stockInModule from './modules/stockIn';
 // init context
 const context = initContext();
 
@@ -15,5 +15,5 @@ const app = createApp(context);
 app.loadModule(coreModule);
 app.loadModule(accountModule);
 app.loadModule(checkItemsModule);
-app.loadModule(chatModule);
+app.loadModule(stockInModule);
 app.init();

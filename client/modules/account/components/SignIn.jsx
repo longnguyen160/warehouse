@@ -95,7 +95,7 @@ export default class SignIn extends React.Component {
             {
               isLoading ?
                 <Button hasBorder disabled>
-                  <i className="fa fa-circle-o-notch fa-spin"></i>Loading
+                  <i className="fa fa-circle-o-notch fa-spin" />Loading
                 </Button> :
                 <Button hasBorder onClick={this.login}>Sign In</Button>
             }

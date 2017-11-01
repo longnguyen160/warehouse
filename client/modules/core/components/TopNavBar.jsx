@@ -21,11 +21,13 @@ class TopNavBar extends Component {
 
   openMenu = () => {
     document.getElementById('OverlayStyled').style.visibility = 'visible';
+    document.getElementById('OverlayStyled').style.opacity = 1;
     document.getElementById('SideMenuMobile').style.width = '250px';
   };
 
   closeMenu = () => {
     document.getElementById('OverlayStyled').style.visibility = 'hidden';
+    document.getElementById('OverlayStyled').style.opacity = 0;
     document.getElementById('SideMenuMobile').style.width = '0';
   };
 

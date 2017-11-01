@@ -96,5 +96,14 @@ export const Button = styled.button`
       background-color: #626262;
       color: #fff;
     }
-    `}
+  `}
+  ${props => props.marginLeft && css`
+    i {
+      margin-left: 5px;
+      margin-right: 0;
+    }
+  `}
+  ${props => props.modal && css`
+    font-size: 18px;
+  `}
 `;

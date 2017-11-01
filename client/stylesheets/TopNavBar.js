@@ -22,6 +22,9 @@ export const HeaderMainItemsStyled = styled.section`
   padding: 0 15px;
   align-items: center;
   cursor: pointer;
+  ${props => props.isHidden && css`
+    visibility: hidden;
+  `}
   font-family: 'Proxima Nova bold';
   ${props => props.relative ? css`
     position: reltaive;
@@ -49,10 +52,7 @@ export const HeaderMainItemsStyled = styled.section`
     color: #91d3ee;
     transition: color 200ms;
     margin-right: 5px;
-    ${props => props.isHidden && css`
-      display: none;
-    `}
-  }
+  }  
   &:hover {
     & > i {
       color: #fff;
@@ -250,7 +250,7 @@ export const MenuMobileStyled = styled.div`
   background-color: #373a47;
   overflow-x: hidden;
   padding-top: 40px;
-  transition: 0.2s;
+  transition: 0.3s;
   & > section{
     display: inline-block;
     text-align: end;
