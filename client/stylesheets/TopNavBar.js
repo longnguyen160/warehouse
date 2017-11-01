@@ -18,16 +18,22 @@ export const HeaderMainBlockStyled = styled.div`
 `;
 export const HeaderMainItemsStyled = styled.section`
   display: flex;
-  flex: 0 0 auto;
+  flex: ${props => props.center ? '1' : '0 0 auto'};
   padding: 0 15px;
   align-items: center;
   cursor: pointer;
+  ${props => props.isHidden && css`
+    visibility: hidden;
+  `}
   font-family: 'Proxima Nova bold';
   ${props => props.relative ? css`
     position: reltaive;
   ` : ''}
   & > a {    
     color: #91d3ee;
+    > i {
+      margin-right: 5px;
+    }
     &:hover {
       color: #fff;
     }
@@ -46,7 +52,7 @@ export const HeaderMainItemsStyled = styled.section`
     color: #91d3ee;
     transition: color 200ms;
     margin-right: 5px;
-  }
+  }  
   &:hover {
     & > i {
       color: #fff;
@@ -105,11 +111,25 @@ export const HeaderMainItemsStyled = styled.section`
       width: 1px;
     }
   `};
-  ${props => props.fillter && css`
+  ${props => props.filter && css`
     min-width: 55px;
     justify-content: center;
     & > i{
       margin-right: 0px;
+    }
+  `};
+  ${props => props.mobileMenu && css`
+    display: none;
+    height: 40px;
+    width: 55px;    
+    justify-content: center;
+    & > i {
+      font-size: 30px;
+      margin-right: 0px;
+    }
+    & > span {
+      font-size: 20px;
+      font-weight: 800;
     }
   `};
   ${props => props.info && css`
@@ -198,3 +218,56 @@ export const SubSelectListStyled = styled.section`
   }
 `;
 
+export const OverlayStyled = styled.div`
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 11;
+  visibility: hidden;
+  top: 0;
+  opacity: 1;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow-x: hidden;
+`;
+
+export const CloseMenuStyled = styled.span`
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  color: #fff;
+  font-size: 15px;
+`;
+
+export const MenuMobileStyled = styled.div`
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 11;
+  top: 0;
+  right: 0;
+  background-color: #373a47;
+  overflow-x: hidden;
+  padding-top: 40px;
+  transition: 0.3s;
+  & > section{
+    display: inline-block;
+    text-align: end;
+    width: 100%;
+    text-transform: uppercase;
+    transition: background 0.3s, box-shadow 0.3s;
+    padding: 12px 15px;
+    box-shadow: inset 0 -1px rgba(0, 0, 0, 0.2);
+    input{
+      width: 100%;
+      background: #fff;
+    }
+    & > span{
+      margin-left: 8px;
+    }
+    & > span{
+      font-size: 11px;
+    }
+  }
+`;

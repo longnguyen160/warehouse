@@ -1,5 +1,6 @@
 import React from 'react';
 import TopNavBar from '../containers/TopNavBar';
+
 class MainLayout extends React.Component {
 
   redirect = () => {
@@ -18,11 +19,11 @@ class MainLayout extends React.Component {
   }
 
   render() {
-    const {children} = this.props;
+    const {children, history} = this.props;
 
     return (
       <div className="app-wrapper">
-        <TopNavBar />
+        <TopNavBar history={history} />
         {children}
       </div>
     );

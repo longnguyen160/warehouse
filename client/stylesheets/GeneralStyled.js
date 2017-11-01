@@ -12,6 +12,16 @@ const zoomIn = keyframes`
   }
 `;
 
+const fadeIn = keyframes`
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+`;
+
 export const FormStyled = styled.div`
   display: flex;
   flex: 1;
@@ -55,8 +65,8 @@ export const PageCustomStyled = styled.div`
   width: 100%;
   ${props => props.chatBox && css`
     padding: 10px 0;
-    max-width: 100%;
-    border: 1px solid #626262;
+    max-width: 100%;    
+    height: 100%;
     overflow-x: hidden;
     overflow-y: auto;  
     -webkit-overflow-scrolling: touch;
@@ -71,6 +81,7 @@ export const TitleAccountStyled = styled.div`
 `;
 
 export const FormBlockStyled = styled.div`
+  transition: all 0.5s;
   ${props => props.auto && css`
     margin: auto;
     width: 50%;
@@ -84,11 +95,32 @@ export const FormBlockStyled = styled.div`
   ${props => props.fullWidth && css`
     width: 100%;    
   `}
+  ${props => props.margin && css`
+    margin: 6px;
+    display: block;
+  `}
+  ${props => (props.hidden && props.hidden === false) ?
+    css`
+      transform: translate(0, 0);
+      opacity: 1;      
+      visibility: visible;
+    `
+  : (props.hidden && props.hidden === true) ?
+    css`
+      transform: translate(0, -100%);
+      height: 0;
+      opacity: 0;      
+      visibility: hidden;
+    ` : null
+  }
 `;
 
 export const FormGroupStyled = styled.div`
   display: flex;
   font-size: 13px;
+  span {
+    margin-right: 5px;
+  }
   ${props => props.right && css`
     justify-content: flex-end;
   `};
@@ -101,7 +133,7 @@ export const FormGroupStyled = styled.div`
   `};
   ${props => props.chatBox && css`
     margin-bottom: 10px;
-    height: 92%;       
+    height: 90%;       
   `};
   ${props => props.chatForm && css`
     height: 100%;
@@ -120,12 +152,29 @@ export const LineFormStyled = styled.div`
   align-items: center;
   flex: 1;
   position: relative;  
+  ${props => props.isShowed === false ?
+    css`      
+      opacity: 0;
+      height: 0;
+    `
+  : css`      
+      opacity: 1;
+      height: 100%;
+  `};
+  transition: all 0.5s;
   textarea, input, select {
     background: #fff;
-    border: 1px solid #d1d1d1;
     padding: 5px 8px;
     color: #626262;
     font-style: italic;
+    ${props => props.borderBottom ?
+      css`
+        border: none;
+        border-bottom: 1px solid #d1d1d1;
+      ` :
+      css`
+        border: 1px solid #d1d1d1;
+    `};    
     border-radius: 3px;
     width: 100%;
     &:focus{
@@ -154,8 +203,7 @@ export const LineFormStyled = styled.div`
   }
   ${props => props.alignCenter && css`
     select {
-      padding: 6px;
-      width: 90%;
+      padding: 6px;      
     }
     justify-content: center;
   `}
@@ -203,9 +251,6 @@ export const LineFormStyled = styled.div`
   props.position === 'right' && css`
     align-items: flex-end;
   `}
-  ${props => props.chatBox && css`
-    margin-top: auto;    
-  `}
   ${props => props.pointer && css`
     cursor: pointer;
   `}
@@ -214,28 +259,12 @@ export const LineFormStyled = styled.div`
 export const TitleFormStyled = styled.span`
   margin-bottom: 5px;
   font-weight: 600;
-  ${props => props.question && css`
-    font-size: 17px;
-    color: #026a95;
-  `}
-  ${props => props.nameService && css`
-    font-size: 23px;
-  `}
-  ${props => props.description && css`
-    font-size: 20px;
-    font-weight: 300;
+  ${props => props.flex && css`
+    flex: 1;
   `}
   ${props => props.price && css`
     font-size: 20px;
     color: #026a95;    
-  `}
-  ${props => props.duration && css`
-    font-size: 20px;
-    color: #fe8f00;    
-  `}
-  ${props => props.divide && css`
-    font-size: 20px;
-    margin: 0 5px;    
   `}
 `;
 
@@ -278,18 +307,38 @@ export const Input = styled.input`
   border: none;
   border-radius: 3px;
   width: 280px;
-  border: 1px solid #626262;
+  ${props => props.borderBottom ?
+    css`        
+      border-bottom: 1px solid #d1d1d1;
+    ` :
+    css`
+      border: 1px solid #d1d1d1;
+  `};  
   transition: all 0.3s ease;
   ${props => props.chat && css`
     width: 100%;
     margin-right: 5px;
   `}
   &:hover {
-    border: 1px solid #026a95;
+    ${props => props.borderBottom ?
+      css`
+        border: none;
+        border-bottom: 1px solid #026a95;
+      ` :
+      css`
+        border: 1px solid #026a95;
+    `};    
   }
   &:focus{
     outline :none;
-    border: 1px solid #026a95;
+    ${props => props.borderBottom ?
+      css`
+        border: none;
+        border-bottom: 1px solid #026a95;
+      ` :
+      css`
+        border: 1px solid #026a95;
+    `};    
   }
 `;
 

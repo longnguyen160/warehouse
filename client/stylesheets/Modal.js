@@ -21,9 +21,10 @@ export const MichaelJackson = keyframes`
 `;
 
 export const MyModal = styled.div`  
-  position: fixed;
-  z-index: 1000;
-  display: ${props => props.isOpen === true ? 'flex' : 'none'};
+  position: fixed;  
+  display: flex;  
+  visibility: ${props => props.isOpen === true ? 'visible' : 'hidden'};
+  opacity: ${props => props.isOpen === true ? 1 : 0};
   flex: 1;
   flex-direction: column;
   justify-content: center;
@@ -34,8 +35,9 @@ export const MyModal = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.4);  
-  animation: ${AlanWalker} 1s;
+  background-color: rgba(0,0,0,0.4);
+  animation: ${props => props.isOpen === true ? AlanWalker : MichaelJackson} 0.5s;
+  transition: visibility 0.5s, opacity 0s;
 `;
 
 export const SlideOpen = keyframes`
