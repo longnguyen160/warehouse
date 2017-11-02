@@ -1,11 +1,11 @@
 import users from './users';
-import services from './services';
+import position from './position';
 import item from './item';
-import messages from './messages';
+import series from './series';
 
 export default function() {
   users(),
-  services(),
+  position(),
   item(),
-  messages()
+  series()
 }

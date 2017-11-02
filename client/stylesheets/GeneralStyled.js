@@ -159,7 +159,7 @@ export const LineFormStyled = styled.div`
     `
   : css`      
       opacity: 1;
-      height: 100%;
+      height: 33px;
   `};
   transition: all 0.5s;
   textarea, input, select {
@@ -178,7 +178,7 @@ export const LineFormStyled = styled.div`
     border-radius: 3px;
     width: 100%;
     &:focus{
-      border-color: #036a95;
+      border-color: ${props => props.error ? 'red': '#036a95'};
       outline: 0;
     }
   }
@@ -288,15 +288,20 @@ export const Image = styled.img`
 `;
 
 export const TextErrorStyled = styled.span`
+  visibility: hidden;
   width: 100%;
-  text-align: center;
-  margin-bottom: 10px;
+  text-align: center;  
   font-weight: 600;
-  transition: all 0.3s ease;
-  cursor: normal;
+  transition: all 0.3s ease;  
   color: red;
-  display: inline-block;
-  min-height: 13px;
+  display: block;  
+  height: 0;
+  ${props => props.error && css`
+    height: 19px;
+    min-height: 13px;
+    margin-bottom: 10px;
+    visibility: visible;
+  `}
 `;
 
 export const Input = styled.input`

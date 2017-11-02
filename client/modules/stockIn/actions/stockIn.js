@@ -1,6 +1,14 @@
 export default {
   clearErrors({ LocalState }) {
-    LocalState.set('SEND_MESSAGE_ERROR', null);
-    LocalState.set('USERID', null);
+    LocalState.set('SERIES', null);
+    LocalState.set('ITEM', null);
+  },
+
+  selectSeries({ LocalState }, selectedSeries) {
+    LocalState.set('SERIES', selectedSeries);
+  },
+
+  getItemDetails({ LocalState }, item) {
+    LocalState.set('ITEM', item);
   }
 }

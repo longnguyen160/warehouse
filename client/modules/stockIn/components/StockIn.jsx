@@ -13,6 +13,7 @@ import {
 } from '../../../stylesheets/GeneralStyled';
 import { Button } from '../../../stylesheets/Button';
 import StockInModal from './StockInModal';
+import { CHECK } from '../../../../lib/enums';
 
 export default class Chat extends Component {
 
@@ -20,8 +21,9 @@ export default class Chat extends Component {
     super(props);
     this.state = {
       isModalOpen: false,
-      selectedOption: '0',
-      nextContent: false
+      addItemContent: false,
+      choosePositionContent: false,
+      error: ''
     };
   }
 
@@ -40,31 +42,91 @@ export default class Chat extends Component {
     scroll.removeEventListener('scroll', this.handleScroll);
   }
 
-  handleKeyPress = (e) => {
-    if (e.charCode === 13) {
-      this.sendMessage();
-    }
-  };
-
   handleScroll = () => {
   };
 
   handleModal = () => {
     const { isModalOpen } = this.state;
-    this.setState({ isModalOpen: !isModalOpen });
+    this.setState({
+      isModalOpen: !isModalOpen,
+      error: null
+    });
+    setTimeout(() =>
+      this.setState({
+        addItemContent: false,
+        choosePositionContent: false,
+      })
+    , 500);
+  };
+
+  handleTextInput = (type, e) => {
+    let { error } = this.state;
+    const update = {};
+
+    switch (type) {
+      case 'quantity':
+        if (!(e.target.value.trim().length > 0 && CHECK.IS_POSITIVE_NUMBER.test(e.target.value.trim()))) {
+          this.setState({ error: 'Quantity is invalid' });
+        } else if (error === 'Quantity is invalid ') {
+          update['error'] = null;
+        }
+        update[type] = e.target.value.trim();
+        this.setState(update);
+        break;
+      case 'series':
+        if (e.target.value.trim() === '') {
+          this.setState({ error: 'Series is invalid '});
+        } else if (error === 'Series is invalid ') {
+          update['error'] = null;
+        }
+        update[type] = e.target.value.trim();
+        this.setState(update);
+        break;
+      case 'item':
+        if (e.target.value.trim() === '') {
+          this.setState({ error: 'Item is invalid '});
+        } else if (error === 'Item is invalid ') {
+          update['error'] = null;
+        }
+        update[type] = e.target.value.trim();
+        this.setState(update);
+        break;
+    }
   };
 
   handleSelectedChange = (e) => {
-    this.setState({ selectedOption: e.target.value });
+    const { selectSeries } = this.props;
+
+    this.setState({ error: null });
+    selectSeries(e.target.value);
   };
 
-  handleNextContent = () => {
-    const { nextContent } = this.state;
-    this.setState({ nextContent: !nextContent});
-  }
+  handleAddItemContent = () => {
+    const { addItemContent } = this.state;
+    this.setState({
+      addItemContent: !addItemContent,
+      error: null
+    });
+  };
+
+  handleChoosePositionContent = () => {
+    const { choosePositionContent, item, quantity } = this.state;
+    const { getItemDetails } = this.props;
+
+    getItemDetails({ item, quantity });
+    this.setState({
+      choosePositionContent: !choosePositionContent,
+      error: null
+    });
+  };
+
+  handleAddItemFunction = () => {
+
+  };
 
   render() {
-    const { isModalOpen, selectedOption, nextContent } = this.state;
+    const { isModalOpen, addItemContent, choosePositionContent, error } = this.state;
+    const { series, selectedOption } = this.props;
 
     return (
       <FormStyled>
@@ -73,8 +135,14 @@ export default class Chat extends Component {
           onClose={this.handleModal}
           handleSelectedChange={this.handleSelectedChange}
           selectedOption={selectedOption}
-          handleNextContent={this.handleNextContent}
-          nextContent={nextContent}
+          handleAddItemContent={this.handleAddItemContent}
+          handleChoosePositionContent={this.handleChoosePositionContent}
+          addItemContent={addItemContent}
+          choosePositionContent={choosePositionContent}
+          handleAddItemFunction={this.handleAddItemFunction}
+          handleTextInput={this.handleTextInput}
+          series={series}
+          error={error}
         />
         <PageStyled chatBox>
           <FormBlockStyled show fullWidth>

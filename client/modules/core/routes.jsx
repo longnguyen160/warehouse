@@ -8,7 +8,7 @@ import MainLayout from './containers/MainLayout';
 import SignIn from '../account/containers/SignIn';
 import HomePage from './components/HomePage';
 import CheckItems from '../checkItems/containers/CheckItems';
-import StockIn from '../stockIn/components/StockIn';
+import StockIn from '../stockIn/containers/StockIn';
 
 export default function (injectDeps) {
   const MainLayoutCtx = injectDeps(MainLayout);
