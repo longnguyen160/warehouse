@@ -22,7 +22,7 @@ export default class CheckItems extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const { items } = nextProps;
-    items.map(item => this.setState({ [item._id]: true }));
+    items.map(item => this.setState({ [item._id]: false }));
   }
 
   handleInput = (e) => {
@@ -76,17 +76,17 @@ export default class CheckItems extends React.Component {
             <PageCustomStyled chatBox>
               {
                 items.map((item, index) =>
-                  <FormBlockStyled key={item._id} margin>
-                    <FormGroupStyled onClick={() => this.showContent(item._id)}>
+                  <FormBlockStyled key={item._id} margin borderBottom>
+                    <FormGroupStyled big onClick={() => this.showContent(item._id)}>
                       <TitleFormStyled flex>{item.name}</TitleFormStyled>
-                      <i className="fa fa-chevron-down"/>
+                      <i className={this.state[item._id] ? "fa fa-chevron-up" : "fa fa-chevron-down"}/>
                     </FormGroupStyled>
-                    <FormBlockStyled margin hidden={this.state[item._id]}>
-                      <FormGroupStyled>
+                    <FormBlockStyled margin isShowed={this.state[item._id]}>
+                      <FormGroupStyled big>
                         <TitleFormStyled>Series: </TitleFormStyled>
                         <span>{series[index].name}</span>
                       </FormGroupStyled>
-                      <FormGroupStyled>
+                      <FormGroupStyled big>
                         <TitleFormStyled>Category: </TitleFormStyled>
                         {
                           categories[index].map((category, i) =>
@@ -96,15 +96,15 @@ export default class CheckItems extends React.Component {
                           )
                         }
                       </FormGroupStyled>
-                      <FormGroupStyled>
+                      <FormGroupStyled big>
                         <TitleFormStyled>Author: </TitleFormStyled>
                         <span>{series[index].author}</span>
                       </FormGroupStyled>
-                      <FormGroupStyled>
+                      <FormGroupStyled big>
                         <TitleFormStyled>Quantity: </TitleFormStyled>
                         <span>{item.quantity}</span>
                       </FormGroupStyled>
-                      <FormGroupStyled>
+                      <FormGroupStyled big>
                         <TitleFormStyled>Position: </TitleFormStyled>
                         {
                           warehouses[index].map((warehouse, i) =>

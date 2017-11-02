@@ -67,7 +67,7 @@ export default class Chat extends Component {
       case 'quantity':
         if (!(e.target.value.trim().length > 0 && CHECK.IS_POSITIVE_NUMBER.test(e.target.value.trim()))) {
           this.setState({ error: 'Quantity is invalid' });
-        } else if (error === 'Quantity is invalid ') {
+        } else if (error === 'Quantity is invalid') {
           update['error'] = null;
         }
         update[type] = e.target.value.trim();
@@ -75,8 +75,8 @@ export default class Chat extends Component {
         break;
       case 'series':
         if (e.target.value.trim() === '') {
-          this.setState({ error: 'Series is invalid '});
-        } else if (error === 'Series is invalid ') {
+          this.setState({ error: 'Series is invalid'});
+        } else if (error === 'Series is invalid') {
           update['error'] = null;
         }
         update[type] = e.target.value.trim();
@@ -84,8 +84,8 @@ export default class Chat extends Component {
         break;
       case 'item':
         if (e.target.value.trim() === '') {
-          this.setState({ error: 'Item is invalid '});
-        } else if (error === 'Item is invalid ') {
+          this.setState({ error: 'Item is invalid'});
+        } else if (error === 'Item is invalid') {
           update['error'] = null;
         }
         update[type] = e.target.value.trim();
@@ -125,7 +125,7 @@ export default class Chat extends Component {
   };
 
   render() {
-    const { isModalOpen, addItemContent, choosePositionContent, error } = this.state;
+    const { isModalOpen, addItemContent, choosePositionContent, error, item, quantity } = this.state;
     const { series, selectedOption } = this.props;
 
     return (
@@ -143,6 +143,8 @@ export default class Chat extends Component {
           handleTextInput={this.handleTextInput}
           series={series}
           error={error}
+          item={item}
+          quantity={quantity}
         />
         <PageStyled chatBox>
           <FormBlockStyled show fullWidth>

@@ -99,25 +99,27 @@ export const FormBlockStyled = styled.div`
     margin: 6px;
     display: block;
   `}
-  ${props => (props.hidden && props.hidden === false) ?
-    css`
-      transform: translate(0, 0);
+  ${props => (props.isShowed === true) ?
+    css`      
       opacity: 1;      
       visibility: visible;
+      max-height: 200px;
     `
-  : (props.hidden && props.hidden === true) ?
-    css`
-      transform: translate(0, -100%);
-      height: 0;
+  : (props.isShowed === false) ?
+    css`      
+      max-height: 0;
       opacity: 0;      
       visibility: hidden;
     ` : null
   }
+  ${props => props.borderBottom && css`
+    border-bottom: 1px solid #d1d1d1;
+  `}
 `;
 
 export const FormGroupStyled = styled.div`
   display: flex;
-  font-size: 13px;
+  font-size: ${props => props.big ? '16px' : '13px'};
   span {
     margin-right: 5px;
   }
@@ -157,10 +159,13 @@ export const LineFormStyled = styled.div`
       opacity: 0;
       height: 0;
     `
-  : css`      
+  : props.isShowed === true ?
+    css`
       opacity: 1;
       height: 33px;
-  `};
+    `
+    : null
+  };
   transition: all 0.5s;
   textarea, input, select {
     background: #fff;

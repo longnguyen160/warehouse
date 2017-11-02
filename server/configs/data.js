@@ -22,7 +22,28 @@ Meteor.startup(function () {
         }
       }, { filter: false });
     }
+
+    const admin = Meteor.users.findOne({ 'emails.address': 'admin@zigvy.com' });
+
+    if (!admin) {
+      const userData = {
+        email: 'admin@zigvy.com',
+        password: '123456789',
+      };
+
+      const userId = Accounts.createUser(userData);
+      Meteor.users.update({ _id: userId }, {
+        $set: {
+          'emails.0.verified': true,
+          firstName: 'Kujo',
+          lastName: 'Jotaro',
+          company: 'Zigvy Coperation',
+          role: ROLES.ADMIN
+        }
+      }, { filter: false });
+    }
   };
+
   const InsertData = () => {
     let warehouses = Warehouses.find().fetch();
     let warehouseIds = warehouses.map(warehouse => warehouse._id);

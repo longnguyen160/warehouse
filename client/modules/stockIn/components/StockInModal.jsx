@@ -23,6 +23,8 @@ const StockInModal = (props) => {
     choosePositionContent,
     series,
     handleTextInput,
+    item,
+    quantity,
     error
   } = props;
   const getPosition = () => (
@@ -165,6 +167,7 @@ const StockInModal = (props) => {
               hasBorder
               modal
               onClick={handleChoosePositionContent}
+              key={2}
             >
               <i className="fa fa-arrow-left"/> Previous
             </Button>
@@ -172,6 +175,7 @@ const StockInModal = (props) => {
               hasBorder
               modal
               onClick={handleChoosePositionContent}
+              key={3}
             >
               <i className="fa fa-check-square-o"/> Add
             </Button>
@@ -183,6 +187,7 @@ const StockInModal = (props) => {
                 hasBorder
                 modal
                 onClick={handleAddItemContent}
+                key={'c'}
               >
                 <i className="fa fa-arrow-left"/> Previous
               </Button>
@@ -191,12 +196,20 @@ const StockInModal = (props) => {
                 marginLeft
                 modal
                 onClick={handleChoosePositionContent}
+                key={'d'}
+                disabled={(error || !item || !quantity) ? "disabled" : null}
               >
                 Next <i className="fa fa-arrow-right"/>
               </Button>
             </LineFormStyled>
           :
-            <Button hasBorder marginLeft modal onClick={handleAddItemContent}>
+            <Button
+              hasBorder
+              marginLeft
+              modal
+              onClick={handleAddItemContent}
+              disabled={error ? "disabled" : null}
+            >
               Next <i className="fa fa-arrow-right"/>
             </Button>
       }

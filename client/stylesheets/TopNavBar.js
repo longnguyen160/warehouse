@@ -4,7 +4,7 @@ export const HeaderMainStyled = styled.div`
   display: flex;
   min-height: 40px;
   align-items: center;
-  background-color: #026a95;
+  background-color: ${props => props.admin ? 'red' : '#026a95'};
   ${props => props.center && css`
     justify-content: center;
   `}
@@ -24,7 +24,7 @@ export const HeaderMainItemsStyled = styled.section`
   cursor: pointer;
   ${props => props.isHidden && css`
     visibility: hidden;
-  `}
+  `};
   font-family: 'Proxima Nova bold';
   ${props => props.relative ? css`
     position: reltaive;
@@ -40,7 +40,7 @@ export const HeaderMainItemsStyled = styled.section`
   }
   & > span {
     font-size: 11px;
-    color: #91d3ee;
+    color: ${props => props.admin ? '#fff' : '#91d3ee'};
     text-transform: uppercase;
     transition: color 200ms;
     @media(max-width: 1024px){
