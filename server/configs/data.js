@@ -18,7 +18,23 @@ Meteor.startup(function () {
           firstName: 'Gyro',
           lastName: 'Zeppeli',
           company: 'Zigvy Coperation',
-          role: ROLES.STAFF
+          role: ROLES.STAFF,
+        }
+      }, { filter: false });
+
+      userData = {
+        email: 'nghiepvth@zigvy.com',
+        password: '123456789',
+      };
+
+      userId = Accounts.createUser(userData);
+      Meteor.users.update({ _id: userId }, {
+        $set: {
+          'emails.0.verified': true,
+          firstName: 'Stagit',
+          lastName: 'Stephan',
+          company: 'Zigvy Coperation',
+          role: ROLES.STAFF,
         }
       }, { filter: false });
     }
@@ -54,11 +70,23 @@ Meteor.startup(function () {
         address: '38/6K Nguyễn Văn Trỗi'
       };
       warehouseIds.push(Warehouses.insert(warehouse));
+      const userId = Meteor.users.findOne({ emails: 'longnt@zigvy.com' });
+      Meteor.users.update({ _id: userId }, { 
+          $set:{
+            warehouseId: warehouseIds[0],
+          }
+        }, { filter: false });
       warehouse = {
         name: 'W2',
         address: '136/2 Tô Ký'
       };
-      warehouseIds.push(Warehouses.insert(warehouse));
+      warehouseIds.push(Warehouses.insert(warehouse));      
+      userId = Meteor.users.findOne({ emails: 'nghiepvth@zigvy.com' });
+      Meteor.users.update({ _id: userId }, { 
+          $set:{
+            warehouseId: warehouseIds[1],
+          }
+        }, { filter: false });
     }
 
     let sections = Sections.find().fetch();
@@ -491,7 +519,7 @@ Meteor.startup(function () {
         sectionId: sectionIds[0],
         blockId: blockIds[0],
         shelfId: shelfIds[0],
-        boxId: [boxIds[0]],
+        boxId: [boxIds[2]],
         seriesId: seriIds[0],
         ISBN: "987-604-2-08814-5",
         quantity: 100,

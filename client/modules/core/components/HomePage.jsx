@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import {
   FormStyled,
   LineFormStyled,
-  PageStyled,
 } from "../../../stylesheets/GeneralStyled";
 import { Button } from '../../../stylesheets/Button';
 
