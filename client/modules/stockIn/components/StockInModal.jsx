@@ -26,12 +26,17 @@ const StockInModal = (props) => {
     handleTextInput,
     item,
     quantity,
+    size,
+    isbn,
+    edition,
+    price,
     error,
     shelves,
     selectedShelf,
     rowId,
     columnId,
-    box
+    box,
+    handleAddItemFunction
   } = props;
 
   const current = box && box.currentQuantity === box.maxItem ? 'full'
@@ -133,7 +138,7 @@ const StockInModal = (props) => {
           type='text'
           placeholder="Series name..."
           innerRef={(element) => this.series = element}
-          onChange={(e) => handleTextInput('series', e)}
+          onChange={(e) => handleTextInput('Series', e)}
           borderBottom
         />
       </LineFormStyled>
@@ -144,34 +149,98 @@ const StockInModal = (props) => {
   );
   const addItem = () => (
     <FormBlockStyled show>
-      <LineFormStyled
-        marginBottom
-        borderBottom
-        error={error}
-        key={'a'}
-      >
-        <Input
-          type='text'
-          placeholder="Item name..."
-          innerRef={(element) => this.item = element}
-          onChange={(e) => handleTextInput('item', e)}
+      <FormGroupStyled>
+        <LineFormStyled
+          marginBottom
           borderBottom
-        />
-      </LineFormStyled>
-      <LineFormStyled
-        marginBottom
-        borderBottom
-        error={error}
-        key={'b'}
-      >
-        <Input
-          type='text'
-          placeholder="Quantity..."
-          innerRef={(element) => this.quantity = element}
-          onChange={(e) => handleTextInput('quantity', e)}
+          error={error}
+          key={'a'}
+        >
+          <Input
+            type='text'
+            placeholder="Item name..."
+            innerRef={(element) => this.item = element}
+            onChange={(e) => handleTextInput('Item', e)}
+            borderBottom
+          />
+        </LineFormStyled>
+      </FormGroupStyled>
+      <FormGroupStyled>
+        <LineFormStyled
+          marginBottom
           borderBottom
-        />
-      </LineFormStyled>
+          error={error}
+          key={'b'}
+        >
+          <Input
+            type='text'
+            placeholder="Quantity..."
+            innerRef={(element) => this.quantity = element}
+            onChange={(e) => handleTextInput('Quantity', e)}
+            borderBottom
+          />
+        </LineFormStyled>
+        <LineFormStyled
+          marginBottom
+          borderBottom
+          error={error}
+          key={'c'}
+        >
+          <Input
+            type='text'
+            placeholder="Size..."
+            innerRef={(element) => this.size = element}
+            onChange={(e) => handleTextInput('Size', e)}
+            borderBottom
+          />
+        </LineFormStyled>
+      </FormGroupStyled>
+      <FormGroupStyled>
+        <LineFormStyled
+          marginBottom
+          borderBottom
+          error={error}
+          key={'d'}
+        >
+          <Input
+            type='text'
+            placeholder="ISBN..."
+            innerRef={(element) => this.isbn = element}
+            onChange={(e) => handleTextInput('ISBN', e)}
+            borderBottom
+          />
+        </LineFormStyled>
+      </FormGroupStyled>
+      <FormGroupStyled>
+        <LineFormStyled
+          marginBottom
+          borderBottom
+          error={error}
+          key={'e'}
+        >
+          <Input
+            type='text'
+            placeholder="Edition..."
+            innerRef={(element) => this.edition = element}
+            onChange={(e) => handleTextInput('Edition', e)}
+            borderBottom
+          />
+        </LineFormStyled>
+        <LineFormStyled
+          marginBottom
+          borderBottom
+          error={error}
+          key={'f'}
+        >
+          <Input
+            type='text'
+            placeholder="Price..."
+            innerRef={(element) => this.price = element}
+            onChange={(e) => handleTextInput('Price', e)}
+            borderBottom
+          />
+        </LineFormStyled>
+      </FormGroupStyled>
       <TextErrorStyled error={error}>
         {error}
       </TextErrorStyled>
@@ -213,8 +282,9 @@ const StockInModal = (props) => {
             <Button
               hasBorder
               modal
-              onClick={handleChoosePositionContent}
+              onClick={handleAddItemFunction}
               key={3}
+              disabled={(box && box.currentQuantity === box.maxItem) ? "disabled" : null}
             >
               <i className="fa fa-check-square-o"/> Add
             </Button>
@@ -236,7 +306,7 @@ const StockInModal = (props) => {
                 modal
                 onClick={handleChoosePositionContent}
                 key={'d'}
-                disabled={(error || !item || !quantity) ? "disabled" : null}
+                disabled={(error || !item || !quantity || !size || !isbn || !edition || !price) ? "disabled" : null}
               >
                 Next <i className="fa fa-arrow-right"/>
               </Button>

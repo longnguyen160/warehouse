@@ -59,39 +59,36 @@ export default class Chat extends Component {
     , 500);
   };
 
-  handleTextInput = (type, e) => {
+  checkEmpty = (type, e) => {
     let { error } = this.state;
     const update = {};
 
-    switch (type) {
-      case 'quantity':
-        if (!(e.target.value.trim().length > 0 && CHECK.IS_POSITIVE_NUMBER.test(e.target.value.trim()))) {
-          this.setState({ error: 'Quantity is invalid' });
-        } else if (error === 'Quantity is invalid') {
-          update['error'] = null;
-        }
-        update[type] = e.target.value.trim();
-        this.setState(update);
-        break;
-      case 'series':
-        if (e.target.value.trim() === '') {
-          this.setState({ error: 'Series is invalid'});
-        } else if (error === 'Series is invalid') {
-          update['error'] = null;
-        }
-        update[type] = e.target.value.trim();
-        this.setState(update);
-        break;
-      case 'item':
-        if (e.target.value.trim() === '') {
-          this.setState({ error: 'Item is invalid'});
-        } else if (error === 'Item is invalid') {
-          update['error'] = null;
-        }
-        update[type] = e.target.value.trim();
-        this.setState(update);
-        break;
+    if (e.target.value.trim() === '') {
+      this.setState({ error: `${type} is invalid`});
+    } else if (error === `${type} is invalid`) {
+      update['error'] = null;
     }
+    update[type] = e.target.value.trim();
+    this.setState(update);
+  };
+
+  checkPositiveNumber = (type, e) => {
+    let { error } = this.state;
+    const update = {};
+
+    if (!(e.target.value.trim().length > 0 && CHECK.IS_POSITIVE_NUMBER.test(e.target.value.trim()))) {
+      this.setState({ error: `${type} is invalid`});
+    } else if (error === `${type} is invalid`) {
+      update['error'] = null;
+    }
+    update[type] = e.target.value.trim();
+    this.setState(update);
+  };
+
+  handleTextInput = (type, e) => {
+    if (type === 'Quantity' || type === 'Price') {
+      this.checkPositiveNumber(type, e);
+    } else this.checkEmpty(type, e);
   };
 
   handleSelectedChange = (type, e) => {
@@ -111,10 +108,10 @@ export default class Chat extends Component {
   };
 
   handleChoosePositionContent = () => {
-    const { choosePositionContent, item, quantity } = this.state;
+    const { choosePositionContent, item, quantity, size, isbn, edition, price } = this.state;
     const { selectOption } = this.props;
 
-    selectOption({ item, quantity }, 'item');
+    selectOption({ item, quantity, size, isbn, edition, price }, 'item');
     this.setState({
       choosePositionContent: !choosePositionContent,
       error: null
@@ -126,7 +123,18 @@ export default class Chat extends Component {
   };
 
   render() {
-    const { isModalOpen, addItemContent, choosePositionContent, error, item, quantity } = this.state;
+    const {
+      isModalOpen,
+      addItemContent,
+      choosePositionContent,
+      error,
+      item,
+      quantity,
+      size,
+      isbn,
+      edition,
+      price
+    } = this.state;
     const { series, selectedOption, shelves, selectedShelf, rowId, columnId, box } = this.props;
 
     return (
@@ -146,6 +154,10 @@ export default class Chat extends Component {
           error={error}
           item={item}
           quantity={quantity}
+          size={size}
+          isbn={isbn}
+          edition={edition}
+          price={price}
           shelves={shelves}
           selectedShelf={selectedShelf}
           rowId={rowId}

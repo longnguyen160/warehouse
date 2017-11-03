@@ -22,23 +22,27 @@ export const composer = ({ context, clearErrors }, onData) => {
         const categoryIds = series.map(series => series.categoryId);
         categories = categoryIds.map(categoryId =>
           Collections.Categories.find({ _id: { $in: categoryId } }).fetch()
-        )
-        const shelfIds = items.map(item => item.shelfId);
-        shelves = shelfIds.map(shelfId =>
-          Collections.Shelves.find({ _id: shelfId }).fetch()
         );
-        const blockIds = items.map(item => item.blockId);
-        blocks = blockIds.map(blockId =>
-          Collections.Blocks.find({ _id: blockId }).fetch()
-        );
-        const sectionIds = items.map(item => item.sectionId);
-        sections = sectionIds.map(sectionId =>
-          Collections.Sections.find({ _id: sectionId }).fetch()
-        );
-        const warehouseIds = items.map(item => item.warehouseId);
-        warehouses = warehouseIds.map(warehouseId =>
-          Collections.Warehouses.find({ _id: warehouseId }).fetch()
-        );
+        shelves = Collections.Shelves.find({}).fetch();
+        blocks = Collections.Blocks.find({}).fetch();
+        sections = Collections.Sections.find({}).fetch();
+        warehouses = Collections.Warehouses.find({}).fetch()
+        // const shelfIds = items.map(item => item.shelfId);
+        // shelves = shelfIds.map(shelfId =>
+        //   Collections.Shelves.find({ _id: shelfId }).fetch()
+        // );
+        // const blockIds = items.map(item => item.blockId);
+        // blocks = blockIds.map(blockId =>
+        //   Collections.Blocks.find({ _id: blockId }).fetch()
+        // );
+        // const sectionIds = items.map(item => item.sectionId);
+        // sections = sectionIds.map(sectionId =>
+        //   Collections.Sections.find({ _id: sectionId }).fetch()
+        // );
+        // const warehouseIds = items.map(item => item.warehouseId);
+        // warehouses = warehouseIds.map(warehouseId =>
+        //   Collections.Warehouses.find({ _id: warehouseId }).fetch()
+        // );
       }
       break;
     case '1':
