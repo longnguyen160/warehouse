@@ -150,7 +150,7 @@ export const FormGroupStyled = styled.div`
 export const LineFormStyled = styled.div`
   display: flex;
   margin: 0 5px;
-  font-size: 13px;
+  font-size: ${props => props.big ? '15px' : '13px'};
   align-items: center;
   flex: 1;
   position: relative;  
@@ -267,10 +267,6 @@ export const TitleFormStyled = styled.span`
   ${props => props.flex && css`
     flex: 1;
   `}
-  ${props => props.price && css`
-    font-size: 20px;
-    color: #026a95;    
-  `}
 `;
 
 export const Image = styled.img`
@@ -386,7 +382,11 @@ export const Label = styled.label`
   }
 `;
 
-export const SearchStyled = styled.article`
+export const Span = styled.span`
+  color: ${props => props.max ? '#ff3000'
+  : props.current === 'empty' ? '#026a95'
+    : props.current === 'full' ? '#ff3000'
+      : '#01c587'};
 `;
 
 export const InputSearchStyled = styled.div`

@@ -94,15 +94,16 @@ export default class Chat extends Component {
     }
   };
 
-  handleSelectedChange = (e) => {
-    const { selectSeries } = this.props;
+  handleSelectedChange = (type, e) => {
+    const { selectOption } = this.props;
 
     this.setState({ error: null });
-    selectSeries(e.target.value);
+    selectOption(e.target.value, type);
   };
 
   handleAddItemContent = () => {
     const { addItemContent } = this.state;
+
     this.setState({
       addItemContent: !addItemContent,
       error: null
@@ -111,9 +112,9 @@ export default class Chat extends Component {
 
   handleChoosePositionContent = () => {
     const { choosePositionContent, item, quantity } = this.state;
-    const { getItemDetails } = this.props;
+    const { selectOption } = this.props;
 
-    getItemDetails({ item, quantity });
+    selectOption({ item, quantity }, 'item');
     this.setState({
       choosePositionContent: !choosePositionContent,
       error: null
@@ -126,7 +127,7 @@ export default class Chat extends Component {
 
   render() {
     const { isModalOpen, addItemContent, choosePositionContent, error, item, quantity } = this.state;
-    const { series, selectedOption } = this.props;
+    const { series, selectedOption, shelves, selectedShelf, rowId, columnId, box } = this.props;
 
     return (
       <FormStyled>
@@ -145,6 +146,11 @@ export default class Chat extends Component {
           error={error}
           item={item}
           quantity={quantity}
+          shelves={shelves}
+          selectedShelf={selectedShelf}
+          rowId={rowId}
+          columnId={columnId}
+          box={box}
         />
         <PageStyled chatBox>
           <FormBlockStyled show fullWidth>

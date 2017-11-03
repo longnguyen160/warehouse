@@ -7,7 +7,8 @@ import {
   LineFormStyled,
   TitleFormStyled,
   Input,
-  TextErrorStyled
+  TextErrorStyled,
+  Span
 } from '../../../stylesheets/GeneralStyled';
 import { Button } from '../../../stylesheets/Button';
 
@@ -25,37 +26,75 @@ const StockInModal = (props) => {
     handleTextInput,
     item,
     quantity,
-    error
+    error,
+    shelves,
+    selectedShelf,
+    rowId,
+    columnId,
+    box
   } = props;
+
+  const current = box && box.currentQuantity === box.maxItem ? 'full'
+    : box && box.currentQuantity === 0 ? 'empty' : 'not full';
   const getPosition = () => (
     <FormBlockStyled show>
       <FormGroupStyled>
-        <LineFormStyled hasTitle>
+        <LineFormStyled hasTitle big>
           <TitleFormStyled>Shelf</TitleFormStyled>
-          <select onChange={handleSelectedChange}>
-            <option value={0}>SH1</option>
-            <option value={1}>SH2</option>
-            <option value={3}>SH3</option>
+          <select
+            onChange={(e) => handleSelectedChange('shelf', e)}
+            value={selectedShelf}
+          >
+            {
+              shelves.map(shelf =>
+                <option
+                  key={shelf._id}
+                  value={shelf._id}
+                >
+                  {shelf.name}
+                </option>
+              )
+            }
           </select>
         </LineFormStyled>
       </FormGroupStyled>
       <FormGroupStyled>
-        <LineFormStyled hasTitle>
+        <LineFormStyled hasTitle big>
           <TitleFormStyled>Row</TitleFormStyled>
-          <select onChange={handleSelectedChange}>
-            <option value={0}>1</option>
-            <option value={1}>2</option>
-            <option value={3}>3</option>
+          <select
+            onChange={(e) => handleSelectedChange('row', e)}
+            value={rowId}
+          >
+            <option value={'1'}>1</option>
+            <option value={'2'}>2</option>
+            <option value={'3'}>3</option>
+            <option value={'4'}>4</option>
           </select>
         </LineFormStyled>
-        <LineFormStyled hasTitle>
+        <LineFormStyled hasTitle big>
           <TitleFormStyled>Column</TitleFormStyled>
-          <select onChange={handleSelectedChange}>
-            <option value={0}>1</option>
-            <option value={1}>2</option>
-            <option value={3}>3</option>
+          <select
+            onChange={(e) => handleSelectedChange('column', e)}
+            value={columnId}
+          >
+            <option value={'1'}>1</option>
+            <option value={'2'}>2</option>
+            <option value={'3'}>3</option>
+            <option value={'4'}>4</option>
           </select>
         </LineFormStyled>
+      </FormGroupStyled>
+      <FormGroupStyled>
+        <FormGroupStyled big>
+          <TitleFormStyled>Box:</TitleFormStyled>
+          <Span>{box ? box._id : null}</Span>
+        </FormGroupStyled>
+        <FormGroupStyled big>
+          <TitleFormStyled>Status:</TitleFormStyled>
+          <Span current={current}>{box ? box.currentQuantity : null}</Span>
+          <Span>/</Span>
+          <Span max>{box ? box.maxItem : null}</Span>
+        </FormGroupStyled>
       </FormGroupStyled>
     </FormBlockStyled>
   );
@@ -67,7 +106,7 @@ const StockInModal = (props) => {
         key={0}
       >
         <select
-          onChange={handleSelectedChange}
+          onChange={(e) => handleSelectedChange('series', e)}
           value={selectedOption}
         >
           {

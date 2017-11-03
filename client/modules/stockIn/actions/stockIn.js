@@ -2,13 +2,28 @@ export default {
   clearErrors({ LocalState }) {
     LocalState.set('SERIES', null);
     LocalState.set('ITEM', null);
+    LocalState.set('SHELF', null);
+    LocalState.set('ROW', null);
+    LocalState.set('COLUMN', null);
   },
 
-  selectSeries({ LocalState }, selectedSeries) {
-    LocalState.set('SERIES', selectedSeries);
-  },
-
-  getItemDetails({ LocalState }, item) {
-    LocalState.set('ITEM', item);
+  selectOption({ LocalState }, selectedOption, type) {
+    switch (type) {
+      case 'series':
+        LocalState.set('SERIES', selectedOption);
+        break;
+      case 'item':
+        LocalState.set('ITEM', selectedOption);
+        break;
+      case 'shelf':
+        LocalState.set('SHELF', selectedOption);
+        break;
+      case 'row':
+        LocalState.set('ROW', selectedOption);
+        break;
+      case 'column':
+        LocalState.set('COLUMN', selectedOption);
+        break;
+    }
   }
 }

@@ -5,7 +5,10 @@ export const composer = ({ context, clearErrors }, onData) => {
   const { LocalState, Collections } = context();
   let selectedOption = LocalState.get('SERIES');
   let itemDetails = LocalState.get('ITEM');
-  let series = [];
+  let selectedShelf = LocalState.get('SHELF');
+  let rowId = LocalState.get('ROW') || '1';
+  let columnId = LocalState.get('COLUMN') || '1';
+  let series = [], shelves = [], box = null;
 
   if (Meteor.subscribe('getSeries').ready()) {
     series = Collections.Series.find({}).fetch();
@@ -15,25 +18,27 @@ export const composer = ({ context, clearErrors }, onData) => {
   }
 
   if (itemDetails && Meteor.subscribe('showPosition', selectedOption).ready()) {
-    const series = Collections.Series.findOne({ _id: selectedOption });
     const item = Collections.Items.findOne({ name: itemDetails.item });
     if (!item) {
-      const items = Collections.Items.find({ seriesId: selectedOption }, { $sort: { name: -1 } }).fetch();
-      const boxIds = items.map(item => item.boxId);
-      const boxes = boxIds.map(boxId =>
-        Collections.Boxes.find({ _id: { $in: boxId } }).fetch()
-      );
+      shelves = Collections.Shelves.find({}, { $sort: { name: 1 } }).fetch();
+      if (!selectedShelf) {
+        selectedShelf = shelves[0]._id;
+      }
+      box = Collections.Boxes.findOne({
+        shelfId: selectedShelf,
+        rowId,
+        columnId
+      });
     }
   }
 
-  onData(null, { series, selectedOption });
+  onData(null, { series, selectedOption, shelves, selectedShelf, rowId, columnId, box });
   return clearErrors;
 };
 
 export const depsMapper = (context, actions) => ({
   clearErrors: actions.stockIn.clearErrors,
-  selectSeries: actions.stockIn.selectSeries,
-  getItemDetails: actions.stockIn.getItemDetails,
+  selectOption: actions.stockIn.selectOption,
   context: () => context
 });
 

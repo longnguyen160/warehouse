@@ -405,7 +405,12 @@ Meteor.startup(function () {
       let seri = {
         name: "Kết Giới Sư",
         author: "Yellow TANABE",
-        shelfId: [[shelfIds[0], shelfIds[1], shelfIds[2]]],
+        shelfIds: [
+          {
+            warehouseId: warehouseIds[0],
+            ids: [shelfIds[0], shelfIds[1], shelfIds[2]]
+          }
+        ],
         publishYear: "2004",
         publisher: "SHOUGAKUKAN",
         categoryId: [categoryIds[0], categoryIds[1], categoryIds[2]]
@@ -414,7 +419,12 @@ Meteor.startup(function () {
       seri = {
         name: "ONE-PUNCH MAN",
         author: "ONE, Yusuke Murata",
-        shelfId: [[shelfIds[34], shelfIds[35]]],
+        shelfIds: [
+          {
+            warehouseId: warehouseIds[0],
+            ids: [shelfIds[34], shelfIds[35]]
+          }
+        ],
         publishYear: "2004",
         publisher: "SHOUGAKUKAN",
         categoryId: [categoryIds[12]]
@@ -423,7 +433,12 @@ Meteor.startup(function () {
       seri = {
         name: "ONE PIECE",
         author: "Eiichiro Oda",
-        shelfId: [[shelfIds[65], shelfIds[66]]],
+        shelfIds: [
+          {
+            warehouseId: warehouseIds[0],
+            ids: [shelfIds[65], shelfIds[66]]
+          }
+        ],
         publishYear: "1997",
         publisher: "SHUEISHA",
         categoryId: [categoryIds[0], categoryIds[1], categoryIds[2]]

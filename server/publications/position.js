@@ -16,9 +16,18 @@ export default function () {
         },
         children: [
           {
-            find(item) {
-              return Boxes.find({ _id: { $in: item.boxId } });
-            }
+            find(item, series) {
+              const shelfIds = series.shelfIds.filter(element => element.warehouseId === item.warehouseId);
+
+              return Shelves.find({ _id: { $in: shelfIds[0].ids }});
+            },
+            children: [
+              {
+                find(shelf, item, series) {
+                  return Boxes.find({ shelfId: shelf._id });
+                }
+              }
+            ]
           }
         ]
       }
