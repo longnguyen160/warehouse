@@ -6,12 +6,12 @@ Meteor.startup(function () {
     const user = Meteor.users.findOne({ 'emails.address': 'longnt@zigvy.com' });
 
     if (!user) {
-      const userData = {
+      let userData = {
         email: 'longnt@zigvy.com',
         password: '123456789',
       };
 
-      const userId = Accounts.createUser(userData);
+      let userId = Accounts.createUser(userData);
       Meteor.users.update({ _id: userId }, {
         $set: {
           'emails.0.verified': true,
@@ -70,30 +70,30 @@ Meteor.startup(function () {
         address: '38/6K Nguyễn Văn Trỗi'
       };
       warehouseIds.push(Warehouses.insert(warehouse));
-      const userId = Meteor.users.findOne({ emails: 'longnt@zigvy.com' });
-      Meteor.users.update({ _id: userId }, { 
-          $set:{
-            warehouseId: warehouseIds[0],
-          }
-        }, { filter: false });
+      let userId = Meteor.users.findOne({ emails: 'longnt@zigvy.com' });
+      Meteor.users.update({ _id: userId }, {
+        $set: {
+          warehouseId: warehouseIds[0],
+        }
+      }, { filter: false });
       warehouse = {
         name: 'W2',
         address: '136/2 Tô Ký'
       };
-      warehouseIds.push(Warehouses.insert(warehouse));      
+      warehouseIds.push(Warehouses.insert(warehouse));
       userId = Meteor.users.findOne({ emails: 'nghiepvth@zigvy.com' });
-      Meteor.users.update({ _id: userId }, { 
-          $set:{
-            warehouseId: warehouseIds[1],
-          }
-        }, { filter: false });
+      Meteor.users.update({ _id: userId }, {
+        $set: {
+          warehouseId: warehouseIds[1],
+        }
+      }, { filter: false });
     }
 
     let sections = Sections.find().fetch();
     let sectionIds = sections.length > 0 ? sections.map(section => section._id) : [];
 
     if (sections.length === 0) {
-      warehouseIds.forEach((warehouse, warehouseId) => {
+      warehouseIds.forEach((warehouseId) => {
         let section = {
           name: 'SA',
           warehouseId
@@ -481,154 +481,199 @@ Meteor.startup(function () {
 
     if (items.length === 0) {
       let item = {
-        warehouseId: warehouseIds[0],
-        sectionId: sectionIds[0],
-        blockId: blockIds[0],
-        shelfId: shelfIds[0],
-        boxId: [boxIds[0]],
+        details: [{
+          warehouseId: warehouseIds[0],
+          sectionId: sectionIds[0],
+          blockId: blockIds[0],
+          shelfId: shelfIds[0],
+          boxId: [boxIds[0]],
+          quantity: 100,
+          code: "W1SAB1SH1BO1",
+        }, {
+          warehouseId: warehouseIds[1],
+          sectionId: sectionIds[5],
+          blockId: blockIds[20],
+          shelfId: shelfIds[81],
+          boxId: [boxIds[1299]],
+          quantity: 100,
+          code: "W2SBB1SH2BO4",
+        }],
         seriesId: seriIds[0],
         ISBN: "987-604-2-08812-1",
-        quantity: 100,
         size: "11,3 x 17,6",
         edition: "TANKOUBON",
         price: 18000,
-        code: "W1SAB1SH1BO1",
         name: "Kết Giới Sư 20"
       };
       itemIds.push(Items.insert(item));
       Boxes.update({ _id: boxIds[0] }, { $set: { currentQuantity: 100 } });
+      Boxes.update({ _id: boxIds[1299] }, { $set: { currentQuantity: 100 } });      
       item = {
-        warehouseId: warehouseIds[0],
-        sectionId: sectionIds[0],
-        blockId: blockIds[0],
-        shelfId: shelfIds[0],
-        boxId: [boxIds[1]],
+        details: [{
+          warehouseId: warehouseIds[0],
+          sectionId: sectionIds[0],
+          blockId: blockIds[0],
+          shelfId: shelfIds[0],
+          boxId: [boxIds[1]],
+          quantity: 100,
+          code: "W1SAB1SH1BO2",
+        }, {
+          warehouseId: warehouseIds[1],
+          sectionId: sectionIds[5],
+          blockId: blockIds[20],
+          shelfId: shelfIds[81],
+          boxId: [boxIds[1300]],
+          quantity: 100,
+          code: "W2SBB1SH2BO4",
+        }],
         seriesId: seriIds[0],
         ISBN: "987-604-2-08813-8",
-        quantity: 100,
         size: "11,3 x 17,6",
         edition: "TANKOUBON",
         price: 18000,
-        code: "W1SAB1SH1BO2",
         name: "Kết Giới Sư 21"
       };
       itemIds.push(Items.insert(item));
       Boxes.update({ _id: boxIds[1] }, { $set: { currentQuantity: 100 } });
+      Boxes.update({ _id: boxIds[1300] }, { $set: { currentQuantity: 100 } });
       item = {
-        warehouseId: warehouseIds[0],
-        sectionId: sectionIds[0],
-        blockId: blockIds[0],
-        shelfId: shelfIds[0],
-        boxId: [boxIds[2]],
+        details: [{
+          warehouseId: warehouseIds[0],
+          sectionId: sectionIds[0],
+          blockId: blockIds[0],
+          shelfId: shelfIds[0],
+          boxId: [boxIds[2]],
+          quantity: 100,
+          code: "W1SAB1SH1BO1",
+        }, {
+          warehouseId: warehouseIds[1],
+          sectionId: sectionIds[5],
+          blockId: blockIds[20],
+          shelfId: shelfIds[81],
+          boxId: [boxIds[1301]],
+          quantity: 100,
+          code: "W2SBB1SH2BO4",
+        }],
         seriesId: seriIds[0],
         ISBN: "987-604-2-08814-5",
-        quantity: 100,
         size: "11,3 x 17,6",
         edition: "TANKOUBON",
         price: 18000,
-        code: "W1SAB1SH1BO1",
         name: "Kết Giới Sư 22"
       };
       itemIds.push(Items.insert(item));
-      Boxes.update({ _id: boxIds[0] }, { $set: { currentQuantity: 200 } });
+      Boxes.update({ _id: boxIds[2] }, { $set: { currentQuantity: 200 } });
+      Boxes.update({ _id: boxIds[1301] }, { $set: { currentQuantity: 100 } });      
       item = {
-        warehouseId: warehouseIds[0],
-        sectionId: sectionIds[2],
-        blockId: blockIds[8],
-        shelfId: shelfIds[34],
-        boxId: [boxIds[553]],
+        details: [{
+          warehouseId: warehouseIds[0],
+          sectionId: sectionIds[2],
+          blockId: blockIds[8],
+          shelfId: shelfIds[34],
+          boxId: [boxIds[553]],
+          quantity: 100,
+          code: "W1SCB9SH35BO554",
+        }],
         seriesId: seriIds[1],
         ISBN: "987-604-2-08909-8",
-        quantity: 100,
         size: "11,3 x 17,6",
         edition: "TANKOUBON",
         price: 20000,
-        code: "W1SCB9SH35BO554",
         name: "ONE-PUNCH MAN 11"
       };
       itemIds.push(Items.insert(item));
       Boxes.update({ _id: boxIds[553] }, { $set: { currentQuantity: 100 } });
       item = {
-        warehouseId: warehouseIds[0],
-        sectionId: sectionIds[2],
-        blockId: blockIds[8],
-        shelfId: shelfIds[34],
-        boxId: [boxIds[554]],
+        details: [{
+          warehouseId: warehouseIds[0],
+          sectionId: sectionIds[2],
+          blockId: blockIds[8],
+          shelfId: shelfIds[34],
+          boxId: [boxIds[554]],
+          quantity: 100,
+          code: "W1SCB9SH35BO555",
+        }],
         seriesId: seriIds[1],
         ISBN: "987-604-2-08910-4",
-        quantity: 100,
         size: "11,3 x 17,6",
         edition: "TANKOUBON",
         price: 20000,
-        code: "W1SCB9SH35BO555",
         name: "ONE-PUNCH MAN 12"
       };
       itemIds.push(Items.insert(item));
       Boxes.update({ _id: boxIds[554] }, { $set: { currentQuantity: 100 } });
       item = {
-        warehouseId: warehouseIds[0],
-        sectionId: sectionIds[2],
-        blockId: blockIds[8],
-        shelfId: shelfIds[34],
-        boxId: [boxIds[555]],
+        details: [{
+          warehouseId: warehouseIds[0],
+          sectionId: sectionIds[2],
+          blockId: blockIds[8],
+          shelfId: shelfIds[34],
+          boxId: [boxIds[555]],
+          quantity: 100,
+          code: "W1SCB9SH35BO556",
+        }],
         seriesId: seriIds[1],
         ISBN: "987-604-2-08911-1",
-        quantity: 100,
         size: "11,3 x 17,6",
         edition: "TANKOUBON",
         price: 20000,
-        code: "W1SCB9SH35BO556",
         name: "ONE-PUNCH MAN 13"
       };
       itemIds.push(Items.insert(item));
       Boxes.update({ _id: boxIds[555] }, { $set: { currentQuantity: 100 } });
       item = {
-        warehouseId: warehouseIds[1],
-        sectionId: sectionIds[5],
-        blockId: blockIds[17],
-        shelfId: shelfIds[65],
-        boxId: [boxIds[1024]],
+        details: [{
+          warehouseId: warehouseIds[1],
+          sectionId: sectionIds[5],
+          blockId: blockIds[17],
+          shelfId: shelfIds[65],
+          boxId: [boxIds[1024]],
+          quantity: 100,
+          code: "W1SAB1SH4B64",
+        }],
         seriesId: seriIds[2],
         ISBN: "987-604-2-07117-8",
-        quantity: 100,
         size: "11,3 x 17,6",
         edition: "TANKOUBON",
         price: 19500,
-        code: "W1SAB1SH4B64",
         name: "ONE PIECE 75"
       };
       itemIds.push(Items.insert(item));
       Boxes.update({ _id: boxIds[1024] }, { $set: { currentQuantity: 100 } });
       item = {
-        warehouseId: warehouseIds[1],
-        sectionId: sectionIds[5],
-        blockId: blockIds[17],
-        shelfId: shelfIds[65],
-        boxId: [boxIds[1025]],
+        details: [{
+          warehouseId: warehouseIds[1],
+          sectionId: sectionIds[5],
+          blockId: blockIds[17],
+          shelfId: shelfIds[65],
+          boxId: [boxIds[1025]],
+          quantity: 100,
+          code: "W1SAB1SH4B65",
+        }],
         seriesId: seriIds[2],
         ISBN: "987-604-2-07118-5",
-        quantity: 100,
         size: "11,3 x 17,6",
         edition: "TANKOUBON",
         price: 19500,
-        code: "W1SAB1SH4B65",
         name: "ONE PIECE 76"
       };
       itemIds.push(Items.insert(item));
       Boxes.update({ _id: boxIds[1025] }, { $set: { currentQuantity: 100 } });
       item = {
-        warehouseId: warehouseIds[1],
-        sectionId: sectionIds[5],
-        blockId: blockIds[17],
-        shelfId: shelfIds[65],
-        boxId: [boxIds[1026]],
+        details: [{
+          warehouseId: warehouseIds[1],
+          sectionId: sectionIds[5],
+          blockId: blockIds[17],
+          shelfId: shelfIds[65],
+          boxId: [boxIds[1026]],
+          quantity: 100,
+          code: "W1SAB1SH4B66",
+        }],
         seriesId: seriIds[2],
         ISBN: "987-604-2-08727-8",
-        quantity: 100,
         size: "11,3 x 17,6",
         edition: "TANKOUBON",
         price: 19500,
-        code: "W1SAB1SH4B66",
         name: "ONE PIECE 77"
       };
       itemIds.push(Items.insert(item));
