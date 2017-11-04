@@ -68,7 +68,7 @@ export default class Chat extends Component {
     } else if (error === `${type} is invalid`) {
       update['error'] = null;
     }
-    update[type] = e.target.value.trim();
+    update[type.toLowerCase()] = e.target.value.trim();
     this.setState(update);
   };
 
@@ -81,14 +81,19 @@ export default class Chat extends Component {
     } else if (error === `${type} is invalid`) {
       update['error'] = null;
     }
-    update[type] = e.target.value.trim();
+    update[type.toLowerCase()] = e.target.value.trim();
     this.setState(update);
   };
 
   handleTextInput = (type, e) => {
+    const { selectOption } = this.props;
+
     if (type === 'Quantity' || type === 'Price') {
       this.checkPositiveNumber(type, e);
     } else this.checkEmpty(type, e);
+    if (type === 'Item') {
+      selectOption(e.target.value, 'name');
+    }
   };
 
   handleSelectedChange = (type, e) => {
@@ -135,7 +140,7 @@ export default class Chat extends Component {
       edition,
       price
     } = this.state;
-    const { series, selectedOption, shelves, selectedShelf, rowId, columnId, box } = this.props;
+    const { series, selectedOption, shelves, selectedShelf, rowId, columnId, box, hideInput } = this.props;
 
     return (
       <FormStyled>
@@ -163,6 +168,7 @@ export default class Chat extends Component {
           rowId={rowId}
           columnId={columnId}
           box={box}
+          hideInput={hideInput}
         />
         <PageStyled chatBox>
           <FormBlockStyled show fullWidth>

@@ -11,6 +11,10 @@ export const composer = ({ context, clearErrors }, onData) => {
     case '0':
       if (Meteor.subscribe('getItem', filter).ready()) {
         items = Collections.Items.find().fetch();
+        items = items.map(item => {
+          item.details = item.details.filter(detail => detail.warehouseId === Meteor.user().warehouseId)[0];
+          return item;
+        });
         const seriesId = items.map(item => item.seriesId);
         series = seriesId.map(element =>
           Collections.Series.findOne({ _id: element })

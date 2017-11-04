@@ -4,16 +4,25 @@ import StockIn from '../components/StockIn';
 export const composer = ({ context, clearErrors }, onData) => {
   const { LocalState, Collections } = context();
   let selectedOption = LocalState.get('SERIES');
+  let itemName = LocalState.get('NAME');
   let itemDetails = LocalState.get('ITEM');
   let selectedShelf = LocalState.get('SHELF');
   let rowId = LocalState.get('ROW') || '1';
   let columnId = LocalState.get('COLUMN') || '1';
   let series = [], shelves = [], box = null;
+  let hideInput = false;
 
   if (Meteor.subscribe('getSeries').ready()) {
     series = Collections.Series.find({}).fetch();
     if (!selectedOption) {
       selectedOption = series[0]._id;
+    }
+  }
+
+  if (itemName && Meteor.subscribe('findItem', itemName).ready()) {
+    const item = Collections.Items.findOne({ name: itemName });
+    if (item) {
+      hideInput = true;
     }
   }
 
@@ -32,7 +41,7 @@ export const composer = ({ context, clearErrors }, onData) => {
     }
   }
 
-  onData(null, { series, selectedOption, shelves, selectedShelf, rowId, columnId, box });
+  onData(null, { series, selectedOption, shelves, selectedShelf, rowId, columnId, box, hideInput });
   return clearErrors;
 };
 

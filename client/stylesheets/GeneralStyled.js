@@ -82,6 +82,16 @@ export const TitleAccountStyled = styled.div`
 
 export const FormBlockStyled = styled.div`
   transition: all 0.5s;
+  ${props => props.hideInput === true ?
+    css`
+      height: 0;
+    `
+  : props.hideInput === false ?
+    css`
+      height: 84px;
+    `
+    : null
+  };
   ${props => props.auto && css`
     margin: auto;
     width: 50%;
@@ -120,6 +130,17 @@ export const FormBlockStyled = styled.div`
 export const FormGroupStyled = styled.div`
   display: flex;
   font-size: ${props => props.big ? '16px' : '13px'};
+  transition: all 1s;
+  ${props => props.hideInput === true ?
+    css`
+      height: 0;
+    `
+  : props.hideInput === false ?
+    css`
+      height: 42px;
+    `
+    : null
+  };
   span {
     margin-right: 5px;
   }
@@ -163,6 +184,20 @@ export const LineFormStyled = styled.div`
     css`
       opacity: 1;
       height: 33px;
+    `
+    : null
+  };
+  ${props => props.hideInput === true ?
+    css`
+      flex: 0;
+      margin: 0;
+      input {
+        padding: 0 !important;
+      }
+    `
+  : props.hideInput === false ?
+    css`
+      flex: 1;
     `
     : null
   };

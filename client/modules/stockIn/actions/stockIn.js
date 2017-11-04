@@ -24,6 +24,9 @@ export default {
       case 'column':
         LocalState.set('COLUMN', selectedOption);
         break;
+      case 'name':
+        LocalState.set('NAME', selectedOption);
+        break;
     }
   }
 }

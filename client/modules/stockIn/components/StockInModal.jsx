@@ -36,7 +36,8 @@ const StockInModal = (props) => {
     rowId,
     columnId,
     box,
-    handleAddItemFunction
+    handleAddItemFunction,
+    hideInput
   } = props;
 
   const current = box && box.currentQuantity === box.maxItem ? 'full'
@@ -185,6 +186,7 @@ const StockInModal = (props) => {
           borderBottom
           error={error}
           key={'c'}
+          hideInput={hideInput}
         >
           <Input
             type='text'
@@ -195,12 +197,13 @@ const StockInModal = (props) => {
           />
         </LineFormStyled>
       </FormGroupStyled>
-      <FormGroupStyled>
+      <FormGroupStyled hideInput={hideInput}>
         <LineFormStyled
           marginBottom
           borderBottom
           error={error}
           key={'d'}
+          hideInput={hideInput}
         >
           <Input
             type='text'
@@ -211,12 +214,13 @@ const StockInModal = (props) => {
           />
         </LineFormStyled>
       </FormGroupStyled>
-      <FormGroupStyled>
+      <FormGroupStyled hideInput={hideInput}>
         <LineFormStyled
           marginBottom
           borderBottom
           error={error}
           key={'e'}
+          hideInput={hideInput}
         >
           <Input
             type='text'
@@ -231,6 +235,7 @@ const StockInModal = (props) => {
           borderBottom
           error={error}
           key={'f'}
+          hideInput={hideInput}
         >
           <Input
             type='text'
@@ -306,7 +311,7 @@ const StockInModal = (props) => {
                 modal
                 onClick={handleChoosePositionContent}
                 key={'d'}
-                disabled={(error || !item || !quantity || !size || !isbn || !edition || !price) ? "disabled" : null}
+                disabled={(error || !item || !quantity || ((!size || !isbn || !edition || !price) && !hideInput)) ? "disabled" : null}
               >
                 Next <i className="fa fa-arrow-right"/>
               </Button>

@@ -1,5 +1,5 @@
 import { useDeps, composeAll, composeWithTracker } from 'mantra-core';
-import SignUp from '../components/SignUp';
+import DashBoard from '../components/DashBoard';
 
 export const composer = ({ context, clearErrors }, onData) => {
 
@@ -18,4 +18,4 @@ export const depsMapper = (context, actions) => ({
 export default composeAll(
   composeWithTracker(composer),
   useDeps(depsMapper)
-)(SignUp);
+)(DashBoard);

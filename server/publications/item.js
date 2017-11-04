@@ -24,31 +24,39 @@ export default function () {
       },
       {
         find(item) {
-          return Boxes.find({ _id: { $in: item.boxId } });
+          const detail = item.details.filter(detail => detail.warehouseId === Meteor.user().warehouseId)[0];
+          return Boxes.find({ _id: { $in: detail.boxId } });
         }
       },
       {
         find(item) {
-          return Shelves.find({ _id: item.shelfId });
+          const detail = item.details.filter(detail => detail.warehouseId === Meteor.user().warehouseId)[0];
+          return Shelves.find({ _id: detail.shelfId });
         }
       },
       {
         find(item) {
-          return Blocks.find({ _id: item.blockId });
+          const detail = item.details.filter(detail => detail.warehouseId === Meteor.user().warehouseId)[0];
+          return Blocks.find({ _id: detail.blockId });
         }
       },
       {
         find(item) {
-          return Sections.find({ _id: item.sectionId });
+          const detail = item.details.filter(detail => detail.warehouseId === Meteor.user().warehouseId)[0];
+          return Sections.find({ _id: detail.sectionId });
         }
       },
       {
         find(item) {
-          return Warehouses.find({ _id: item.warehouseId });
+          return Warehouses.find({ _id: Meteor.user().warehouseId });
         }
       }
     ]
   }));
 
-  Meteor.publish('getItemBySeries')
+  Meteor.publish('findItem', (name) => {
+    check(name, String);
+
+    return Items.find({ name });
+  });
 }
