@@ -183,16 +183,28 @@ export default class StockIn extends Component {
   };
 
   submit = () => {
-    const { submitItem, hideInput } = this.props;
+    const { submitItem, hideInput, selectedOption } = this.props;
     const { item, quantity, size, isbn, edition, price, status } = this.state;
+    let data = {};
 
     if (hideInput) {
-      submitItem({ item, quantity }, status, (err) => {
-        if (!err) {
-          this.handleModal();
-        }
-      })
+      data = { item, quantity };
+    } else {
+      data = {
+        item,
+        quantity,
+        size,
+        isbn,
+        edition,
+        price,
+        seriesId: selectedOption
+      };
     }
+    submitItem(data, status, (err) => {
+      if (!err) {
+        this.handleModal();
+      }
+    });
   };
 
   render() {
