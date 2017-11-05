@@ -9,7 +9,7 @@ export const composer = ({ context, clearErrors }, onData) => {
   let selectedShelf = LocalState.get('SHELF');
   let rowId = LocalState.get('ROW') || '1';
   let columnId = LocalState.get('COLUMN') || '1';
-  let series = [], shelves = [], box = null;
+  let series = [], shelves = [], data = [], box = null;
   let hideInput = false;
 
   if (Meteor.subscribe('getSeries').ready()) {
@@ -40,13 +40,26 @@ export const composer = ({ context, clearErrors }, onData) => {
     });
   }
 
-  onData(null, { series, selectedOption, shelves, selectedShelf, rowId, columnId, box, hideInput });
+  if (Meteor.subscribe('getInsertedItem').ready()) {
+    const action = Collections.Action.find().fetch();
+    const itemId = action.map(element => element.itemId);
+    const items = Collections.Items.find({ _id: { $in: itemId } }).fetch();
+    data = action.map((element, index) => {
+      return {
+        name: items[index].name,
+        quantity: element.quantity
+      }
+    })
+  }
+
+  onData(null, { series, selectedOption, shelves, selectedShelf, rowId, columnId, box, hideInput, data });
   return clearErrors;
 };
 
 export const depsMapper = (context, actions) => ({
   clearErrors: actions.stockIn.clearErrors,
   selectOption: actions.stockIn.selectOption,
+  submitItem: actions.stockIn.submitItem,
   context: () => context
 });
 

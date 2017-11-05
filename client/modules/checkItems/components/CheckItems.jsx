@@ -114,8 +114,17 @@ export default class CheckItems extends React.Component {
                           warehouses[index].map((warehouse, i) =>
                             <span key={warehouse._id}>
                               Warehouse {warehouse.name}, Section {sections[index][i].name},
-                              Block {blocks[index][i].name}, Shelf {shelves[index][i].name},
-                              Row {boxes[index][i].rowId}, Column {boxes[index][i].columnId}
+                              Block {blocks[index][i].name},
+                              {
+                                shelves[index].map((shelf, j) =>
+                                  <FormBlockStyled margin key={boxes[index][j]._id}>
+                                    <span>
+                                      Shelf {shelf.name},
+                                      Row {boxes[index][j].rowId}, Column {boxes[index][j].columnId}
+                                    </span>
+                                  </FormBlockStyled>
+                                )
+                              }
                             </span>
                           )
                         }

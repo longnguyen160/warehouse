@@ -28,9 +28,11 @@ export const composer = ({ context, clearErrors }, onData) => {
         boxes = boxIds.map(boxId =>
           Collections.Boxes.find({ _id: { $in: boxId } }).fetch()
         );
-        const shelfIds = boxes.map(box => box[0].shelfId);
+        const shelfIds = boxes.map(box => box.map(element => element.shelfId));
         shelves = shelfIds.map(shelfId =>
-          Collections.Shelves.find({ _id: shelfId }).fetch()
+          shelfId.map(element =>
+            Collections.Shelves.findOne({ _id: element })
+          )
         );
         const blockIds = items.map(item => item.details.blockId);
         blocks = blockIds.map(blockId =>

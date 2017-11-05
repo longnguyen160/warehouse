@@ -42,7 +42,8 @@ const StockInModal = (props) => {
     status,
     changeButton,
     viewForm,
-    submit
+    submit,
+    remainItem
   } = props;
 
   const findBox = status.find(element => element.boxId === box._id);
@@ -112,7 +113,7 @@ const StockInModal = (props) => {
       <FormGroupStyled>
         <FormGroupStyled balance big>
           <TitleFormStyled>Remained Quantity:</TitleFormStyled>
-          <Span max>{quantity}</Span>
+          <Span max>{remainItem}</Span>
         </FormGroupStyled>
       </FormGroupStyled>
     </FormBlockStyled>
@@ -270,20 +271,28 @@ const StockInModal = (props) => {
   const viewFormDetails = () => (
     <FormBlockStyled show>
       <FormGroupStyled big>
-        <TitleFormStyled>Name: </TitleFormStyled>
+        <TitleFormStyled flex>Name: </TitleFormStyled>
         <span>{item}</span>
       </FormGroupStyled>
       <FormGroupStyled big>
-        <TitleFormStyled>Box - Quantity: </TitleFormStyled>
-        {
-          status.map((element, index) =>
-            <span key={element.boxId}>
-              <Span>{element.boxName}</Span>
-              <Span current='empty'>-</Span>
-              <Span max>{element.number}{index === status.length - 1 ? null : ','}</Span>
-            </span>
-          )
-        }
+        <TitleFormStyled flex>Quantity: </TitleFormStyled>
+        <span>{quantity}</span>
+      </FormGroupStyled>
+      <FormGroupStyled big>
+        <LineFormStyled alignCenter noMargin big>
+          <TitleFormStyled flex>Box - Quantity: </TitleFormStyled>
+        </LineFormStyled>
+        <LineFormStyled hasTitle right noMargin marginBottom big>
+          {
+            status.map((element, index) =>
+              <span key={element.boxId}>
+                <Span>{element.boxName}</Span>
+                <Span current='empty'>-</Span>
+                <Span max>{element.number}</Span>
+              </span>
+            )
+          }
+        </LineFormStyled>
       </FormGroupStyled>
     </FormBlockStyled>
   );
@@ -321,7 +330,7 @@ const StockInModal = (props) => {
             <Button
               hasBorder
               modal
-              onClick={handleChoosePositionContent}
+              onClick={handleViewForm}
               key={'g'}
             >
               <i className="fa fa-arrow-left"/> Previous

@@ -15,7 +15,7 @@ import { Button } from '../../../stylesheets/Button';
 import StockInModal from './StockInModal';
 import { CHECK } from '../../../../lib/enums';
 
-export default class Chat extends Component {
+export default class StockIn extends Component {
 
   constructor(props) {
     super(props);
@@ -57,6 +57,7 @@ export default class Chat extends Component {
       this.setState({
         addItemContent: false,
         choosePositionContent: false,
+        viewForm: false
       })
     , 500);
   };
@@ -85,6 +86,9 @@ export default class Chat extends Component {
     }
     update[type.toLowerCase()] = e.target.value.trim();
     this.setState(update);
+    if (type === 'Quantity') {
+      this.setState({ remainItem: e.target.value.trim() });
+    }
   };
 
   handleTextInput = (type, e) => {
@@ -108,6 +112,9 @@ export default class Chat extends Component {
   handleAddItemContent = () => {
     const { addItemContent } = this.state;
 
+    if (addItemContent) {
+      this.setState({});
+    }
     this.setState({
       addItemContent: !addItemContent,
       error: null
@@ -118,6 +125,21 @@ export default class Chat extends Component {
     const { choosePositionContent, item, quantity, size, isbn, edition, price } = this.state;
     const { selectOption } = this.props;
 
+    if (choosePositionContent) {
+      this.setState({
+        status: [],
+        item: null,
+        quantity: null,
+        size: null,
+        isbn: null,
+        edition: null,
+        price: null
+      });
+      selectOption(null, 'row');
+      selectOption(null, 'column');
+      selectOption(null, 'shelf');
+      selectOption(null, 'name');
+    }
     selectOption({ item, quantity, size, isbn, edition, price }, 'item');
     this.setState({
       choosePositionContent: !choosePositionContent,
@@ -127,8 +149,9 @@ export default class Chat extends Component {
 
   handleAddItemFunction = () => {
     const { box } = this.props;
-    const { status, quantity } = this.state;
-    const number = (quantity <= box.maxItem - box.currentQuantity) ? quantity : box.maxItem - box.currentQuantity;
+    const { status, remainItem } = this.state;
+
+    const number = (remainItem <= box.maxItem - box.currentQuantity) ? remainItem : box.maxItem - box.currentQuantity;
 
     status.push({
       boxId: box._id,
@@ -137,19 +160,39 @@ export default class Chat extends Component {
     });
     this.setState({
       status,
-      quantity: quantity - number,
-      changeButton: quantity - number === 0
+      remainItem: remainItem - number,
+      changeButton: remainItem - number === 0
     });
   };
 
   handleViewForm = () => {
-    const { viewForm } = this.state;
+    const { viewForm, quantity, changeButton } = this.state;
+    const { selectOption } = this.props;
 
+    if (viewForm) {
+      this.setState({
+        status: [],
+        remainItem: quantity,
+        changeButton: !changeButton
+      });
+      selectOption(null, 'row');
+      selectOption(null, 'column');
+      selectOption(null, 'shelf');
+    }
     this.setState({ viewForm: !viewForm });
   };
 
   submit = () => {
+    const { submitItem, hideInput } = this.props;
+    const { item, quantity, size, isbn, edition, price, status } = this.state;
 
+    if (hideInput) {
+      submitItem({ item, quantity }, status, (err) => {
+        if (!err) {
+          this.handleModal();
+        }
+      })
+    }
   };
 
   render() {
@@ -166,9 +209,10 @@ export default class Chat extends Component {
       price,
       status,
       changeButton,
-      viewForm
+      viewForm,
+      remainItem
     } = this.state;
-    const { series, selectedOption, shelves, selectedShelf, rowId, columnId, box, hideInput } = this.props;
+    const { series, selectedOption, shelves, selectedShelf, rowId, columnId, box, hideInput, data } = this.props;
 
     return (
       <FormStyled>
@@ -202,6 +246,7 @@ export default class Chat extends Component {
           status={status}
           changeButton={changeButton}
           viewForm={viewForm}
+          remainItem={remainItem}
         />
         <PageStyled chatBox>
           <FormBlockStyled show fullWidth>
@@ -210,6 +255,19 @@ export default class Chat extends Component {
                 chatBox
                 ref={(element) => this.scroll = element}
               >
+                {
+                  data.map(element =>
+                    <FormBlockStyled
+                      key={element.name}
+                      margin borderBottom
+                    >
+                      <FormGroupStyled big>
+                        <TitleFormStyled flex>{element.name}</TitleFormStyled>
+                        {element.quantity}
+                      </FormGroupStyled>
+                    </FormBlockStyled>
+                  )
+                }
               </PageCustomStyled>
             </FormGroupStyled>
             <FormGroupStyled input>

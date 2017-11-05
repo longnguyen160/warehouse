@@ -116,7 +116,7 @@ export const FormBlockStyled = styled.div`
     css`      
       opacity: 1;      
       visibility: visible;
-      max-height: 200px;
+      max-height: 500px;
     `
   : (props.isShowed === false) ?
     css`      
@@ -132,7 +132,7 @@ export const FormBlockStyled = styled.div`
 
 export const FormGroupStyled = styled.div`
   display: flex;
-  font-size: ${props => props.big ? '16px' : '13px'};
+  font-size: ${props => props.big ? '15px' : '13px'};
   transition: all 1s;
   ${props => props.balance && css`
     flex: 0.9;
@@ -285,6 +285,9 @@ export const LineFormStyled = styled.div`
   `}
   ${props => props.marginBottom && css`
     margin-bottom: 10px;
+  `}
+  ${props => props.marginTop && css`
+    margin-top: 10px;
   `}
   ${props => props.hover && css`
     &:hover {

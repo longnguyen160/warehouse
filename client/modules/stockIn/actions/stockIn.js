@@ -28,5 +28,15 @@ export default {
         LocalState.set('NAME', selectedOption);
         break;
     }
+  },
+
+  submitItem({ LocalState }, item, status, callback) {
+    Meteor.call('action.stockIn', item, status, (err) => {
+      if (err) {
+        callback('err');
+        return LocalState.set('STOCK_IN_ERROR', err);
+      }
+      callback();
+    });
   }
 }

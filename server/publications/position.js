@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
-import { Items, Series, Categories, Boxes, Shelves, Sections, Blocks, Warehouses } from '../../lib/collections';
+import { Items, Series, Boxes, Shelves } from '../../lib/collections';
 
 export default function () {
   Meteor.publishComposite('showPosition', (seriesId) => ({
@@ -13,21 +13,19 @@ export default function () {
       {
         find(series) {
           return Items.find({ seriesId: series._id });
+        }
+      },
+      {
+        find(series) {
+          const shelfIds = series.shelfIds.filter(element => element.warehouseId === Meteor.user().warehouseId);
+
+          return Shelves.find({ _id: { $in: shelfIds[0].ids }});
         },
         children: [
           {
-            find(item, series) {
-              const shelfIds = series.shelfIds.filter(element => element.warehouseId === Meteor.user().warehouseId);
-
-              return Shelves.find({ _id: { $in: shelfIds[0].ids }});
-            },
-            children: [
-              {
-                find(shelf, item, series) {
-                  return Boxes.find({ shelfId: shelf._id });
-                }
-              }
-            ]
+            find(shelf) {
+              return Boxes.find({ shelfId: shelf._id });
+            }
           }
         ]
       }

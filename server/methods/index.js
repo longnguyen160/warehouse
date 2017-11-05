@@ -1,9 +1,9 @@
 import account from './account';
 import profile from './profile';
-import chat from './chat';
+import action from './action';
 
 export default function() {
   account(),
   profile(),
-  chat()
+  action()
 }
