@@ -25,25 +25,32 @@ export default function () {
       {
         find(item) {
           const detail = item.details.filter(detail => detail.warehouseId === Meteor.user().warehouseId)[0];
-          return Boxes.find({ _id: { $in: detail.boxId } });
+          if (detail) {
+            return Boxes.find({_id: {$in: detail.boxId}});
+          }
+        },
+        children: [
+          {
+            find(box) {
+              return Shelves.find({ _id: box.shelfId });
+            }
+          },
+        ]
+      },
+      {
+        find(item) {
+          const detail = item.details.filter(detail => detail.warehouseId === Meteor.user().warehouseId)[0];
+          if (detail) {
+            return Blocks.find({_id: detail.blockId});
+          }
         }
       },
       {
         find(item) {
           const detail = item.details.filter(detail => detail.warehouseId === Meteor.user().warehouseId)[0];
-          return Shelves.find({ _id: detail.shelfId });
-        }
-      },
-      {
-        find(item) {
-          const detail = item.details.filter(detail => detail.warehouseId === Meteor.user().warehouseId)[0];
-          return Blocks.find({ _id: detail.blockId });
-        }
-      },
-      {
-        find(item) {
-          const detail = item.details.filter(detail => detail.warehouseId === Meteor.user().warehouseId)[0];
-          return Sections.find({ _id: detail.sectionId });
+          if (detail) {
+            return Sections.find({_id: detail.sectionId});
+          }
         }
       },
       {

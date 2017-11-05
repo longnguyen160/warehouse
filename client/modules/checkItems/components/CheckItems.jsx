@@ -76,7 +76,11 @@ export default class CheckItems extends React.Component {
             <PageCustomStyled chatBox>
               {
                 items.map((item, index) =>
-                  <FormBlockStyled key={item._id} margin borderBottom>
+                  <FormBlockStyled
+                    fullHeight={index === items.length - 1}
+                    key={item._id}
+                    margin borderBottom
+                  >
                     <FormGroupStyled big onClick={() => this.showContent(item._id)}>
                       <TitleFormStyled flex>{item.name}</TitleFormStyled>
                       <i className={this.state[item._id] ? "fa fa-chevron-up" : "fa fa-chevron-down"}/>
@@ -102,17 +106,17 @@ export default class CheckItems extends React.Component {
                       </FormGroupStyled>
                       <FormGroupStyled big>
                         <TitleFormStyled>Quantity: </TitleFormStyled>
-                        <span>{item.quantity}</span>
+                        <span>{item.details.quantity}</span>
                       </FormGroupStyled>
                       <FormGroupStyled big>
                         <TitleFormStyled>Position: </TitleFormStyled>
                         {
                           warehouses[index].map((warehouse, i) =>
-                            <spann key={warehouse._id}>
+                            <span key={warehouse._id}>
                               Warehouse {warehouse.name}, Section {sections[index][i].name},
                               Block {blocks[index][i].name}, Shelf {shelves[index][i].name},
                               Row {boxes[index][i].rowId}, Column {boxes[index][i].columnId}
-                            </spann>
+                            </span>
                           )
                         }
                       </FormGroupStyled>

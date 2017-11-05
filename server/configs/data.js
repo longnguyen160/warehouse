@@ -70,7 +70,7 @@ Meteor.startup(function () {
         address: '38/6K Nguyễn Văn Trỗi'
       };
       warehouseIds.push(Warehouses.insert(warehouse));
-      let userId = Meteor.users.findOne({ emails: 'longnt@zigvy.com' });
+      let userId = Meteor.users.findOne({ 'emails.address': 'longnt@zigvy.com' })._id;
       Meteor.users.update({ _id: userId }, {
         $set: {
           warehouseId: warehouseIds[0],
@@ -81,7 +81,7 @@ Meteor.startup(function () {
         address: '136/2 Tô Ký'
       };
       warehouseIds.push(Warehouses.insert(warehouse));
-      userId = Meteor.users.findOne({ emails: 'nghiepvth@zigvy.com' });
+      userId = Meteor.users.findOne({ 'emails.address': 'nghiepvth@zigvy.com' })._id;
       Meteor.users.update({ _id: userId }, {
         $set: {
           warehouseId: warehouseIds[1],

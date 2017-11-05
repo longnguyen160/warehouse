@@ -23,7 +23,9 @@ export default class Chat extends Component {
       isModalOpen: false,
       addItemContent: false,
       choosePositionContent: false,
-      error: ''
+      viewForm: false,
+      error: '',
+      status: []
     };
   }
 
@@ -124,6 +126,29 @@ export default class Chat extends Component {
   };
 
   handleAddItemFunction = () => {
+    const { box } = this.props;
+    const { status, quantity } = this.state;
+    const number = (quantity <= box.maxItem - box.currentQuantity) ? quantity : box.maxItem - box.currentQuantity;
+
+    status.push({
+      boxId: box._id,
+      boxName: box.name,
+      number
+    });
+    this.setState({
+      status,
+      quantity: quantity - number,
+      changeButton: quantity - number === 0
+    });
+  };
+
+  handleViewForm = () => {
+    const { viewForm } = this.state;
+
+    this.setState({ viewForm: !viewForm });
+  };
+
+  submit = () => {
 
   };
 
@@ -138,7 +163,10 @@ export default class Chat extends Component {
       size,
       isbn,
       edition,
-      price
+      price,
+      status,
+      changeButton,
+      viewForm
     } = this.state;
     const { series, selectedOption, shelves, selectedShelf, rowId, columnId, box, hideInput } = this.props;
 
@@ -155,6 +183,8 @@ export default class Chat extends Component {
           choosePositionContent={choosePositionContent}
           handleAddItemFunction={this.handleAddItemFunction}
           handleTextInput={this.handleTextInput}
+          handleViewForm={this.handleViewForm}
+          submit={this.submit}
           series={series}
           error={error}
           item={item}
@@ -169,6 +199,9 @@ export default class Chat extends Component {
           columnId={columnId}
           box={box}
           hideInput={hideInput}
+          status={status}
+          changeButton={changeButton}
+          viewForm={viewForm}
         />
         <PageStyled chatBox>
           <FormBlockStyled show fullWidth>

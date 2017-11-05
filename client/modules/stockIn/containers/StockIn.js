@@ -27,18 +27,17 @@ export const composer = ({ context, clearErrors }, onData) => {
   }
 
   if (itemDetails && Meteor.subscribe('showPosition', selectedOption).ready()) {
-    const item = Collections.Items.findOne({ name: itemDetails.item });
-    if (!item) {
-      shelves = Collections.Shelves.find({}, { $sort: { name: 1 } }).fetch();
-      if (!selectedShelf) {
-        selectedShelf = shelves[0]._id;
-      }
-      box = Collections.Boxes.findOne({
-        shelfId: selectedShelf,
-        rowId,
-        columnId
-      });
+    const seriesLocation = Collections.Series.findOne({ _id: selectedOption }).shelfIds;
+    const shelfIds = seriesLocation.filter(location => location.warehouseId === Meteor.user().warehouseId)[0];
+    shelves = Collections.Shelves.find({ _id: { $in: shelfIds.ids } }, { $sort: { name: 1 } }).fetch();
+    if (!selectedShelf) {
+      selectedShelf = shelves[0]._id;
     }
+    box = Collections.Boxes.findOne({
+      shelfId: selectedShelf,
+      rowId,
+      columnId
+    });
   }
 
   onData(null, { series, selectedOption, shelves, selectedShelf, rowId, columnId, box, hideInput });

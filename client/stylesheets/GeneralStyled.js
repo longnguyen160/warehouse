@@ -82,6 +82,9 @@ export const TitleAccountStyled = styled.div`
 
 export const FormBlockStyled = styled.div`
   transition: all 0.5s;
+  ${props => props.fullHeight === true && css`
+    height: 50%;
+  `}
   ${props => props.hideInput === true ?
     css`
       height: 0;
@@ -131,6 +134,10 @@ export const FormGroupStyled = styled.div`
   display: flex;
   font-size: ${props => props.big ? '16px' : '13px'};
   transition: all 1s;
+  ${props => props.balance && css`
+    flex: 0.9;
+    margin-left: 5px;
+  `}
   ${props => props.hideInput === true ?
     css`
       height: 0;

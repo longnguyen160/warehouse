@@ -22,6 +22,7 @@ const StockInModal = (props) => {
     handleChoosePositionContent,
     addItemContent,
     choosePositionContent,
+    handleViewForm,
     series,
     handleTextInput,
     item,
@@ -37,11 +38,17 @@ const StockInModal = (props) => {
     columnId,
     box,
     handleAddItemFunction,
-    hideInput
+    hideInput,
+    status,
+    changeButton,
+    viewForm,
+    submit
   } = props;
 
-  const current = box && box.currentQuantity === box.maxItem ? 'full'
-    : box && box.currentQuantity === 0 ? 'empty' : 'not full';
+  const findBox = status.find(element => element.boxId === box._id);
+  const temp = findBox ? findBox.number : 0;
+  const current = box && (box.currentQuantity + temp === box.maxItem) ? 'full'
+    : box && (box.currentQuantity + temp === 0) ? 'empty' : 'not full';
   const getPosition = () => (
     <FormBlockStyled show>
       <FormGroupStyled>
@@ -91,19 +98,26 @@ const StockInModal = (props) => {
         </LineFormStyled>
       </FormGroupStyled>
       <FormGroupStyled>
-        <FormGroupStyled big>
+        <FormGroupStyled balance big>
           <TitleFormStyled>Box:</TitleFormStyled>
-          <Span>{box ? box._id : null}</Span>
+          <Span>{box ? box.name : null}</Span>
         </FormGroupStyled>
         <FormGroupStyled big>
           <TitleFormStyled>Status:</TitleFormStyled>
-          <Span current={current}>{box ? box.currentQuantity : null}</Span>
+          <Span current={current}>{box ? (box.currentQuantity + temp) : null}</Span>
           <Span>/</Span>
           <Span max>{box ? box.maxItem : null}</Span>
         </FormGroupStyled>
       </FormGroupStyled>
+      <FormGroupStyled>
+        <FormGroupStyled balance big>
+          <TitleFormStyled>Remained Quantity:</TitleFormStyled>
+          <Span max>{quantity}</Span>
+        </FormGroupStyled>
+      </FormGroupStyled>
     </FormBlockStyled>
   );
+
   const chooseSeries = () => (
     <FormBlockStyled show>
       <LineFormStyled
@@ -148,6 +162,7 @@ const StockInModal = (props) => {
       </TextErrorStyled>
     </FormBlockStyled>
   );
+
   const addItem = () => (
     <FormBlockStyled show>
       <FormGroupStyled>
@@ -252,6 +267,29 @@ const StockInModal = (props) => {
     </FormBlockStyled>
   );
 
+  const viewFormDetails = () => (
+    <FormBlockStyled show>
+      <FormGroupStyled big>
+        <TitleFormStyled>Name: </TitleFormStyled>
+        <span>{item}</span>
+      </FormGroupStyled>
+      <FormGroupStyled big>
+        <TitleFormStyled>Box - Quantity: </TitleFormStyled>
+        {
+          status.map((element, index) =>
+            <span key={element.boxId}>
+              <Span>{element.boxName}</Span>
+              <Span current='empty'>-</Span>
+              <Span max>{element.number}{index === status.length - 1 ? null : ','}</Span>
+            </span>
+          )
+        }
+      </FormGroupStyled>
+    </FormBlockStyled>
+  );
+
+  const disabled = (error || !item || !quantity || ((!size || !isbn || !edition || !price) && !hideInput));
+
   return (
     <Modal
       isOpen={isOpen}
@@ -259,22 +297,45 @@ const StockInModal = (props) => {
     >
       <TitleAccountStyled>
         {
-          choosePositionContent ?
+          viewForm ?
+            'Submit Form'
+          : choosePositionContent ?
             'Get Position'
-          : addItemContent ?
-            'Add Item'
-            : 'Choose Series'
+            : addItemContent ?
+              'Add Item'
+              : 'Choose Series'
         }
       </TitleAccountStyled>
       {
-        choosePositionContent ?
+        viewForm ?
+          viewFormDetails()
+        : choosePositionContent ?
           getPosition()
-        : addItemContent ?
-          addItem()
-          : chooseSeries()
+          : addItemContent ?
+            addItem()
+            : chooseSeries()
       }
       {
-        choosePositionContent ?
+        viewForm ?
+          <LineFormStyled>
+            <Button
+              hasBorder
+              modal
+              onClick={handleChoosePositionContent}
+              key={'g'}
+            >
+              <i className="fa fa-arrow-left"/> Previous
+            </Button>
+            <Button
+              hasBorder
+              modal
+              onClick={submit}
+              key={'h'}
+            >
+              <i className="fa fa-check"/> Submit
+            </Button>
+          </LineFormStyled>
+        : choosePositionContent ?
           <LineFormStyled>
             <Button
               hasBorder
@@ -284,48 +345,61 @@ const StockInModal = (props) => {
             >
               <i className="fa fa-arrow-left"/> Previous
             </Button>
-            <Button
-              hasBorder
-              modal
-              onClick={handleAddItemFunction}
-              key={3}
-              disabled={(box && box.currentQuantity === box.maxItem) ? "disabled" : null}
-            >
-              <i className="fa fa-check-square-o"/> Add
-            </Button>
+            {
+              changeButton ?
+                <Button
+                  hasBorder
+                  marginLeft
+                  modal
+                  onClick={handleViewForm}
+                  key={'e'}
+                >
+                  Next <i className="fa fa-arrow-right"/>
+                </Button>
+              :
+                <Button
+                  hasBorder
+                  modal
+                  onClick={handleAddItemFunction}
+                  key={3}
+                  disabled={current === 'full' ? "disabled" : null}
+                >
+                  <i className="fa fa-check-square-o"/> Add
+                </Button>
+            }
           </LineFormStyled>
-        :
-          addItemContent ?
-            <LineFormStyled>
-              <Button
-                hasBorder
-                modal
-                onClick={handleAddItemContent}
-                key={'c'}
-              >
-                <i className="fa fa-arrow-left"/> Previous
-              </Button>
+          :
+            addItemContent ?
+              <LineFormStyled>
+                <Button
+                  hasBorder
+                  modal
+                  onClick={handleAddItemContent}
+                  key={'c'}
+                >
+                  <i className="fa fa-arrow-left"/> Previous
+                </Button>
+                <Button
+                  hasBorder
+                  marginLeft
+                  modal
+                  onClick={handleChoosePositionContent}
+                  key={'d'}
+                  disabled={disabled ? "disabled" : null}
+                >
+                  Next <i className="fa fa-arrow-right"/>
+                </Button>
+              </LineFormStyled>
+            :
               <Button
                 hasBorder
                 marginLeft
                 modal
-                onClick={handleChoosePositionContent}
-                key={'d'}
-                disabled={(error || !item || !quantity || ((!size || !isbn || !edition || !price) && !hideInput)) ? "disabled" : null}
+                onClick={handleAddItemContent}
+                disabled={error ? "disabled" : null}
               >
                 Next <i className="fa fa-arrow-right"/>
               </Button>
-            </LineFormStyled>
-          :
-            <Button
-              hasBorder
-              marginLeft
-              modal
-              onClick={handleAddItemContent}
-              disabled={error ? "disabled" : null}
-            >
-              Next <i className="fa fa-arrow-right"/>
-            </Button>
       }
     </Modal>
   );

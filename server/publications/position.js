@@ -7,7 +7,7 @@ export default function () {
     find() {
       check(seriesId, String);
 
-      return Series.find({_id: seriesId});
+      return Series.find({ _id: seriesId });
     },
     children: [
       {
@@ -17,7 +17,7 @@ export default function () {
         children: [
           {
             find(item, series) {
-              const shelfIds = series.shelfIds.filter(element => element.warehouseId === item.warehouseId);
+              const shelfIds = series.shelfIds.filter(element => element.warehouseId === Meteor.user().warehouseId);
 
               return Shelves.find({ _id: { $in: shelfIds[0].ids }});
             },
