@@ -150,7 +150,7 @@ export const FormGroupStyled = styled.div`
     `
   : props.hideInput === false ?
     css`
-      height: 42px;
+      height: ${props => props.fullHeight ? '100%' : '42px'};
     `
     : null
   };
@@ -188,15 +188,42 @@ export const LineFormStyled = styled.div`
   align-items: center;
   flex: 1;
   position: relative;  
+  ${props => props.hasDivInput && css`
+    overflow: hidden;
+    border-bottom: 1px solid #d1d1d1;
+    &:hover {
+      ${props => props.borderBottom ?
+        css`
+          border: none;
+          border-bottom: 1px solid #026a95;
+        ` :
+        css`
+          border: 1px solid #026a95;
+      `};    
+    }
+    &:focus{
+      outline :none;
+      ${props => props.borderBottom ?
+        css`
+          border: none;
+          border-bottom: 1px solid #026a95;
+        ` :
+        css`
+          border: 1px solid #026a95;
+      `};    
+    }
+  `}
   ${props => props.isShowed === false ?
     css`      
       opacity: 0;
       height: 0;
+      visibility: hidden;
     `
   : props.isShowed === true ?
     css`
       opacity: 1;
-      height: 33px;
+      height: ${props => props.fullHeight ? '100%' : '33px'};
+      visibility: visible;
     `
     : null
   };
@@ -214,7 +241,7 @@ export const LineFormStyled = styled.div`
     `
     : null
   };
-  transition: all 0.5s;
+  transition: all 1s;
   textarea, input, select {
     background: #fff;
     padding: 5px 8px;
@@ -399,22 +426,41 @@ export const Input = styled.input`
   }
 `;
 
-export const TextArea = styled.textarea`
-  font-size: 1.25em;
+export const DivInput = styled.div`
+  display: flex;
+  font-size: 1.15em;
   padding: 0.5em;
-  color: #000;
+  font-style: italic;
+  color: #8e8e8e;
   background: #fff;
-  border: none;
+  border: ${props => props.border ? '1px solid #026a95' : 'none'};
   border-radius: 3px;
-  width: 100%;
-  border: 1px solid #626262;
+  width: 280px;
+  outline: none;
+  &[contenteditable=true] {
+    &:empty {
+      &:before {
+        content: attr(placeholder);
+      }
+    }
+  }
   transition: all 0.3s ease;
+`;
+
+export const Text = styled.span`
+  font-size: 0.9em;
+  padding: 0.5em;
+  margin: 0.2em;
+  font-style: italic;
+  color: #8e8e8e;
+  background: #fff;
+  border-radius: 3px;
   &:hover {
     border: 1px solid #026a95;
   }
-  &:focus{
-    outline :none;
-    border: 1px solid #026a95;
+  border: 1px solid #8e8e8e;
+  i {
+    margin: 0;
   }
 `;
 

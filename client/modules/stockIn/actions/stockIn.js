@@ -5,12 +5,18 @@ export default {
     LocalState.set('SHELF', null);
     LocalState.set('ROW', null);
     LocalState.set('COLUMN', null);
+    LocalState.set('NAME', null);
+    LocalState.set('SHELF_SERIES', null);
+    LocalState.set('CATEGORY', null);
   },
 
   selectOption({ LocalState }, selectedOption, type) {
     switch (type) {
       case 'series':
         LocalState.set('SERIES', selectedOption);
+        break;
+      case 'seriesData':
+        LocalState.set('SERIES_DATA', selectedOption);
         break;
       case 'item':
         LocalState.set('ITEM', selectedOption);
@@ -27,16 +33,32 @@ export default {
       case 'name':
         LocalState.set('NAME', selectedOption);
         break;
+      case 'shelves':
+        LocalState.set('SHELF_SERIES', selectedOption);
+        break;
+      case 'category':
+        LocalState.set('CATEGORY', selectedOption);
+        break;
     }
   },
 
   submitItem({ LocalState }, item, status, callback) {
-    Meteor.call('action.stockIn', item, status, (err) => {
+    Meteor.call('action.stockInItem', item, status, (err) => {
       if (err) {
         callback('err');
         return LocalState.set('STOCK_IN_ERROR', err);
       }
       callback();
+    });
+  },
+
+  addSeries({ LocalState }, seriesData, selectedCategories, selectedShelves, callback) {
+    Meteor.call('action.stockInSeries', seriesData, selectedCategories, selectedShelves, (err, res) => {
+      if (err) {
+        callback('err');
+        return LocalState.set('STOCK_IN_ERROR', err);
+      }
+      callback(res);
     });
   }
 }
