@@ -7,7 +7,7 @@ export default function () {
     find() {
       check(filter, Object);
 
-      return Items.find(filter);
+      return Items.find(filter, { sort: { name: 1 } });
     },
     children: [
       {

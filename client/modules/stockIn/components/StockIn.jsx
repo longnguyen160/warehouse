@@ -51,6 +51,13 @@ export default class StockIn extends Component {
     const { isModalOpen } = this.state;
     this.setState({
       isModalOpen: !isModalOpen,
+      status: [],
+      item: null,
+      quantity: null,
+      size: null,
+      isbn: null,
+      edition: null,
+      price: null,
       error: null
     });
     setTimeout(() =>
@@ -224,7 +231,7 @@ export default class StockIn extends Component {
       viewForm,
       remainItem
     } = this.state;
-    const { series, selectedOption, shelves, selectedShelf, rowId, columnId, box, hideInput, data } = this.props;
+    const { series, selectedOption, shelves, selectedShelf, rowId, columnId, box, hideInput, actions } = this.props;
 
     return (
       <FormStyled>
@@ -268,15 +275,22 @@ export default class StockIn extends Component {
                 ref={(element) => this.scroll = element}
               >
                 {
-                  data.map(element =>
+                  actions.map(element =>
                     <FormBlockStyled
-                      key={element.name}
+                      key={element.date}
                       margin borderBottom
                     >
-                      <FormGroupStyled big>
-                        <TitleFormStyled flex>{element.name}</TitleFormStyled>
-                        {element.quantity}
+                      <FormGroupStyled big title>
+                        <TitleFormStyled flex>{element.date}</TitleFormStyled>
                       </FormGroupStyled>
+                      {
+                        element.action.map((data, index) =>
+                          <FormGroupStyled big key={data.name + element.date + index}>
+                            <TitleFormStyled flex>{data.name}</TitleFormStyled>
+                            {data.quantity}
+                          </FormGroupStyled>
+                        )
+                      }
                     </FormBlockStyled>
                   )
                 }

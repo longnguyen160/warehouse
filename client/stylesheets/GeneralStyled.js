@@ -134,6 +134,12 @@ export const FormGroupStyled = styled.div`
   display: flex;
   font-size: ${props => props.big ? '15px' : '13px'};
   transition: all 1s;
+  ${props => props.title && css`
+    text-align: center;
+    font-size: 24px;
+    font-style: italic;
+    color: darkseagreen;
+  `}
   ${props => props.balance && css`
     flex: 0.9;
     margin-left: 5px;

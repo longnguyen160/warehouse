@@ -12,17 +12,39 @@ export default function () {
       let itemId = '';
       if (itemDetail) {
         itemId = itemDetail._id;
-        itemDetail.details = itemDetail.details.map(detail => {
-          if (detail.warehouseId === Meteor.user().warehouseId) {
-            detail.quantity += Number.parseInt(item.quantity);
-            status.map(element => {
-              if (!detail.boxId.includes(element.boxId)) {
-                detail.boxId.push(element.boxId)
-              }
-            });
-          }
-          return detail;
-        });
+        if (!itemDetail.details.find(detail => detail.warehouseId === Meteor.user().warehouseId)) {
+          const boxes = Boxes.find({ _id: { $in: status.map(element => element.boxId) } }).fetch();
+          const shelfIds = boxes.map(box => box.shelfId);
+          const shelves = shelfIds.map(shelfId =>
+            Shelves.findOne({ _id: shelfId })
+          );
+          let code = '';
+          for (let i = 0; i < boxes.length; i++)
+            code += shelves[i].name + boxes[i].name;
+          const block = Blocks.findOne({ _id: shelves[0].blockId });
+          const section = Sections.findOne({ _id: block.sectionId });
+          const warehouse = Warehouses.findOne({ _id: section.warehouseId });
+          itemDetail.details.push({
+            warehouseId: Meteor.user().warehouseId,
+            sectionId: section._id,
+            blockId: block._id,
+            boxId: status.map(element => element.boxId),
+            quantity: item.quantity,
+            code: warehouse.name + section.name + block.name + code
+          });
+        } else {
+          itemDetail.details = itemDetail.details.map(detail => {
+            if (detail.warehouseId === Meteor.user().warehouseId) {
+              detail.quantity += Number.parseInt(item.quantity);
+              status.map(element => {
+                if (!detail.boxId.includes(element.boxId)) {
+                  detail.boxId.push(element.boxId)
+                }
+              });
+            }
+            return detail;
+          });
+        }
         Items.update({ _id: itemDetail._id }, { $set: itemDetail });
       } else {
         const boxes = Boxes.find({ _id: { $in: status.map(element => element.boxId) } }).fetch();

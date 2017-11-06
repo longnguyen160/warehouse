@@ -47,7 +47,7 @@ const StockInModal = (props) => {
   } = props;
 
   const findBox = status.find(element => element.boxId === box._id);
-  const temp = findBox ? findBox.number : 0;
+  const temp = findBox ? Number.parseInt(findBox.number) : 0;
   const current = box && (box.currentQuantity + temp === box.maxItem) ? 'full'
     : box && (box.currentQuantity + temp === 0) ? 'empty' : 'not full';
   const getPosition = () => (

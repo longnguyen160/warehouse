@@ -4,7 +4,7 @@ import { Action, Items } from '../../lib/collections';
 export default function () {
   Meteor.publishComposite('getInsertedItem', () => ({
     find() {
-      return Action.find();
+      return Action.find({}, { sort: { date: -1 } });
     },
     children: [
       {
