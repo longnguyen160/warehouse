@@ -3,7 +3,7 @@ import { check } from 'meteor/check';
 import { Items, Series, Boxes, Shelves } from '../../lib/collections';
 
 export default function () {
-  Meteor.publishComposite('showPosition', (seriesId) => ({
+  Meteor.publishComposite('showPositionWithExistedSeries', (seriesId) => ({
     find() {
       check(seriesId, String);
 
@@ -31,4 +31,11 @@ export default function () {
       }
     ]
   }));
+
+  Meteor.publish('showPositionWithNonExistedSeries', (shelves) => {
+    check(shelves, [Object]);
+
+    const shelfIds = shelves.map(shelf => shelf._id);
+    return Boxes.find({ shelfId: { $in: shelfIds } });
+  });
 }

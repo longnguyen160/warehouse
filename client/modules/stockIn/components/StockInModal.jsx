@@ -8,7 +8,8 @@ import {
   TitleFormStyled,
   Input,
   TextErrorStyled,
-  Span
+  Span,
+  Text
 } from '../../../stylesheets/GeneralStyled';
 import { Button } from '../../../stylesheets/Button';
 
@@ -43,7 +44,19 @@ const StockInModal = (props) => {
     changeButton,
     viewForm,
     submit,
-    remainItem
+    remainItem,
+    seriesname,
+    author,
+    year,
+    publisher,
+    allShelves,
+    categories,
+    selectedShelfForSeries,
+    selectedShelves,
+    removeShelf,
+    selectedCategory,
+    selectedCategories,
+    removeCategory
   } = props;
 
   const findBox = status.find(element => element.boxId === box._id);
@@ -154,10 +167,155 @@ const StockInModal = (props) => {
           type='text'
           placeholder="Series name..."
           innerRef={(element) => this.series = element}
-          onChange={(e) => handleTextInput('Series', e)}
+          onChange={(e) => handleTextInput('SeriesName', e)}
           borderBottom
         />
       </LineFormStyled>
+      <FormGroupStyled hideInput={selectedOption !== 'other'}>
+        <LineFormStyled
+          isShowed={selectedOption === 'other'}
+          marginBottom
+          borderBottom
+          error={error}
+          key={12}
+        >
+          <Input
+            type='text'
+            placeholder="Author..."
+            innerRef={(element) => this.author = element}
+            onChange={(e) => handleTextInput('Author', e)}
+            borderBottom
+          />
+        </LineFormStyled>
+        <LineFormStyled
+          isShowed={selectedOption === 'other'}
+          marginBottom
+          borderBottom
+          error={error}
+          key={13}
+          hideInput={hideInput}
+        >
+          <Input
+            type='text'
+            placeholder="Publish Year..."
+            innerRef={(element) => this.year = element}
+            onChange={(e) => handleTextInput('Year', e)}
+            borderBottom
+          />
+        </LineFormStyled>
+      </FormGroupStyled>
+      <LineFormStyled
+        isShowed={selectedOption === 'other'}
+        marginBottom
+        borderBottom
+        error={error}
+        key={14}
+        hideInput={hideInput}
+      >
+        <Input
+          type='text'
+          placeholder="Publisher..."
+          innerRef={(element) => this.publisher = element}
+          onChange={(e) => handleTextInput('Publisher', e)}
+          borderBottom
+        />
+      </LineFormStyled>
+      <FormGroupStyled
+        hideInput={selectedOption !== 'other'}
+        fullHeight
+      >
+        <LineFormStyled
+          alignCenter
+          marginBottom
+          isShowed={selectedOption === 'other'}
+          key={16}
+          hasTitle
+          fullHeight
+        >
+          <TitleFormStyled flex>Shelf </TitleFormStyled>
+          <select
+            onChange={(e) => handleSelectedChange('shelves', e)}
+            value={selectedShelfForSeries}
+          >
+            {
+              allShelves.map((element, index) =>
+                <option
+                  key={element.name}
+                  value={element._id}
+                >
+                  {element.name}
+                </option>
+              )
+            }
+          </select>
+        </LineFormStyled>
+        <LineFormStyled
+          isShowed={selectedOption === 'other'}
+          hasTitle
+          marginBottom
+          borderBottom
+          error={error}
+          key={15}
+          fullHeight
+        >
+          {
+            selectedShelves.map(shelf =>
+              <Text key={shelf._id}>
+                <Span>{shelf.name}</Span>
+                <i className="fa fa-times" onClick={(e) => removeShelf(shelf._id, e)}/>
+              </Text>
+            )
+          }
+        </LineFormStyled>
+      </FormGroupStyled>
+      <FormGroupStyled
+        hideInput={selectedOption !== 'other'}
+        fullHeight
+      >
+        <LineFormStyled
+          alignCenter
+          marginBottom
+          isShowed={selectedOption === 'other'}
+          key={17}
+          hasTitle
+          fullHeight
+        >
+          <TitleFormStyled flex>Category</TitleFormStyled>
+          <select
+            onChange={(e) => handleSelectedChange('category', e)}
+            value={selectedCategory}
+          >
+            {
+              categories.map((element, index) =>
+                <option
+                  key={element.name}
+                  value={element._id}
+                >
+                  {element.name}
+                </option>
+              )
+            }
+          </select>
+        </LineFormStyled>
+        <LineFormStyled
+          isShowed={selectedOption === 'other'}
+          hasTitle
+          marginBottom
+          borderBottom
+          error={error}
+          key={18}
+          fullHeight
+        >
+          {
+            selectedCategories.map(category =>
+              <Text key={category._id}>
+                <Span>{category.name}</Span>
+                <i className="fa fa-times" onClick={(e) => removeCategory(category._id, e)}/>
+              </Text>
+            )
+          }
+        </LineFormStyled>
+      </FormGroupStyled>
       <TextErrorStyled error={error}>
         {error}
       </TextErrorStyled>
@@ -298,6 +456,8 @@ const StockInModal = (props) => {
   );
 
   const disabled = (error || !item || !quantity || ((!size || !isbn || !edition || !price) && !hideInput));
+  const disabledNext = (selectedOption === 'other'
+    && (error || !seriesname || !author || !year || !publisher || (selectedShelves.length === 0) || (selectedCategories.length === 0)));
 
   return (
     <Modal
@@ -405,7 +565,7 @@ const StockInModal = (props) => {
                 marginLeft
                 modal
                 onClick={handleAddItemContent}
-                disabled={error ? "disabled" : null}
+                disabled={disabledNext ? "disabled" : null}
               >
                 Next <i className="fa fa-arrow-right"/>
               </Button>

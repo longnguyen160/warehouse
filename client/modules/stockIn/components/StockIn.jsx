@@ -5,11 +5,8 @@ import {
   PageStyled,
   FormBlockStyled,
   FormGroupStyled,
-  LineFormStyled,
   TitleFormStyled,
-  Input,
-  PageCustomStyled,
-  Image
+  PageCustomStyled
 } from '../../../stylesheets/GeneralStyled';
 import { Button } from '../../../stylesheets/Button';
 import StockInModal from './StockInModal';
@@ -25,7 +22,9 @@ export default class StockIn extends Component {
       choosePositionContent: false,
       viewForm: false,
       error: '',
-      status: []
+      status: [],
+      selectedShelves: [],
+      selectedCategories: []
     };
   }
 
@@ -49,17 +48,27 @@ export default class StockIn extends Component {
 
   handleModal = () => {
     const { isModalOpen } = this.state;
+    const { clearErrors } = this.props;
+
     this.setState({
       isModalOpen: !isModalOpen,
       status: [],
+      selectedShelves: [],
+      selectedCategories: [],
       item: null,
       quantity: null,
       size: null,
       isbn: null,
       edition: null,
       price: null,
-      error: null
+      error: null,
+      series: null,
+      author: null,
+      year: null,
+      publisher: null,
+      changeButton: false
     });
+    clearErrors();
     setTimeout(() =>
       this.setState({
         addItemContent: false,
@@ -101,7 +110,7 @@ export default class StockIn extends Component {
   handleTextInput = (type, e) => {
     const { selectOption } = this.props;
 
-    if (type === 'Quantity' || type === 'Price') {
+    if (type === 'Quantity' || type === 'Price' || type === 'Year') {
       this.checkPositiveNumber(type, e);
     } else this.checkEmpty(type, e);
     if (type === 'Item') {
@@ -110,17 +119,39 @@ export default class StockIn extends Component {
   };
 
   handleSelectedChange = (type, e) => {
-    const { selectOption } = this.props;
+    const { selectOption, allShelves, categories } = this.props;
+    const { selectedShelves, selectedCategories } = this.state;
 
     this.setState({ error: null });
     selectOption(e.target.value, type);
+    if (type === 'shelves') {
+      const shelf = allShelves.find(shelf => shelf._id === e.target.value);
+      selectedShelves.push(shelf);
+      this.setState({ selectedShelves });
+    }
+    if (type === 'category') {
+      const category = categories.find(category => category._id === e.target.value);
+      selectedCategories.push(category);
+      this.setState({ selectedCategories });
+    }
   };
 
   handleAddItemContent = () => {
-    const { addItemContent } = this.state;
+    const { addItemContent, selectedCategories, selectedShelves, series, author, year, publisher } = this.state;
+    const { selectOption, selectedOption } = this.props;
 
     if (addItemContent) {
-      this.setState({});
+      this.setState({
+        selectedShelves: [],
+        selectedCategories: [],
+        series: null,
+        author: null,
+        year: null,
+        publisher: null
+      });
+    }
+    if (selectedOption === 'other') {
+      selectOption({ series, author, year, publisher, selectedShelves, selectedCategories }, 'seriesData');
     }
     this.setState({
       addItemContent: !addItemContent,
@@ -155,14 +186,15 @@ export default class StockIn extends Component {
   };
 
   handleAddItemFunction = () => {
-    const { box } = this.props;
+    const { box, selectedShelf, shelves } = this.props;
     const { status, remainItem } = this.state;
 
     const number = (remainItem <= box.maxItem - box.currentQuantity) ? remainItem : box.maxItem - box.currentQuantity;
+    const shelf = shelves.find(shelf => shelf._id === selectedShelf);
 
     status.push({
       boxId: box._id,
-      boxName: box.name,
+      boxName: shelf.name + '-' + box.name,
       number
     });
     this.setState({
@@ -189,29 +221,82 @@ export default class StockIn extends Component {
     this.setState({ viewForm: !viewForm });
   };
 
-  submit = () => {
+  removeShelf = (shelfId, e) => {
+    e.preventDefault();
+    let { selectedShelves } = this.state;
+
+    selectedShelves = selectedShelves.filter(selectedShelf => selectedShelf._id !== shelfId);
+    this.setState({ selectedShelves });
+  };
+
+  removeCategory = (categoryId, e) => {
+    e.preventDefault();
+    let { selectedCategories } = this.state;
+
+    selectedCategories = selectedCategories.filter(selectedCategory => selectedCategory._id !== categoryId);
+    this.setState({ selectedCategories });
+  };
+
+  handleSubmitItem = (seriesId) => {
     const { submitItem, hideInput, selectedOption } = this.props;
-    const { item, quantity, size, isbn, edition, price, status } = this.state;
-    let data = {};
+    const {
+      item,
+      quantity,
+      size,
+      isbn,
+      edition,
+      price,
+      status,
+    } = this.state;
+    let itemData = {};
 
     if (hideInput) {
-      data = { item, quantity };
+      itemData = {item, quantity};
     } else {
-      data = {
+      itemData = {
         item,
         quantity,
         size,
         isbn,
         edition,
         price,
-        seriesId: selectedOption
+        seriesId: seriesId ? seriesId : selectedOption
       };
     }
-    submitItem(data, status, (err) => {
+
+    submitItem(itemData, status, (err) => {
       if (!err) {
         this.handleModal();
       }
     });
+  };
+
+  submit = () => {
+    const { selectedOption, addSeries } = this.props;
+    const {
+      selectedCategories,
+      selectedShelves,
+      seriesname,
+      author,
+      year,
+      publisher
+    } = this.state;
+    let seriesData = {};
+
+    if (selectedOption === 'other') {
+      seriesData = {
+        seriesname,
+        author,
+        year,
+        publisher
+      };
+
+      addSeries(seriesData, selectedCategories, selectedShelves, (res) => {
+        this.handleSubmitItem(res);
+      })
+    } else {
+      this.handleSubmitItem();
+    }
   };
 
   render() {
@@ -220,6 +305,10 @@ export default class StockIn extends Component {
       addItemContent,
       choosePositionContent,
       error,
+      seriesname,
+      author,
+      year,
+      publisher,
       item,
       quantity,
       size,
@@ -229,9 +318,25 @@ export default class StockIn extends Component {
       status,
       changeButton,
       viewForm,
-      remainItem
+      remainItem,
+      selectedShelves,
+      selectedCategories
     } = this.state;
-    const { series, selectedOption, shelves, selectedShelf, rowId, columnId, box, hideInput, actions } = this.props;
+    const {
+      series,
+      selectedOption,
+      shelves,
+      selectedShelf,
+      rowId,
+      columnId,
+      box,
+      hideInput,
+      actions,
+      allShelves,
+      categories,
+      selectedShelfForSeries,
+      selectedCategory
+    } = this.props;
 
     return (
       <FormStyled>
@@ -248,8 +353,14 @@ export default class StockIn extends Component {
           handleTextInput={this.handleTextInput}
           handleViewForm={this.handleViewForm}
           submit={this.submit}
+          removeShelf={this.removeShelf}
+          removeCategory={this.removeCategory}
           series={series}
           error={error}
+          seriesname={seriesname}
+          author={author}
+          year={year}
+          publisher={publisher}
           item={item}
           quantity={quantity}
           size={size}
@@ -266,6 +377,12 @@ export default class StockIn extends Component {
           changeButton={changeButton}
           viewForm={viewForm}
           remainItem={remainItem}
+          allShelves={allShelves}
+          categories={categories}
+          selectedShelfForSeries={selectedShelfForSeries}
+          selectedShelves={selectedShelves}
+          selectedCategory={selectedCategory}
+          selectedCategories={selectedCategories}
         />
         <PageStyled chatBox>
           <FormBlockStyled show fullWidth>

@@ -1,10 +1,32 @@
 import {Meteor} from 'meteor/meteor';
 import {check} from 'meteor/check';
-import { Action, Items, Boxes, Shelves, Blocks, Sections, Warehouses } from '../../lib/collections';
+import { Series, Action, Items, Boxes, Shelves, Blocks, Sections, Warehouses } from '../../lib/collections';
 
 export default function () {
   Meteor.methods({
-    'action.stockIn'(item, status) {
+    'action.stockInSeries'(seriesData, selectedCategories, selectedShelves) {
+      check(seriesData, Object);
+      check(selectedShelves, [Object]);
+      check(selectedCategories, [Object]);
+
+      const series = {
+        name: seriesData.seriesname,
+        author: seriesData.author,
+        shelfIds: [
+          {
+            warehouseId: Meteor.user().warehouseId,
+            ids: selectedShelves.map(shelf => shelf._id),
+          }
+        ],
+        publishYear: seriesData.year,
+        publisher: seriesData.publisher,
+        categoryId: selectedCategories.map(category => category._id)
+      };
+
+      return Series.insert(series);
+    },
+
+    'action.stockInItem'(item, status) {
       check(item, Object);
       check(status, [Object]);
 
@@ -88,6 +110,7 @@ export default function () {
         staffId: Meteor.userId(),
         itemId: itemId,
         quantity: item.quantity,
+        details: status,
         type: 'Stock In'
       });
     }
