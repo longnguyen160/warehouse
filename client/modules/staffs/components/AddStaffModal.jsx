@@ -35,7 +35,7 @@ const AddStaffModal = (props) => {
           <Input
             type="text"
             placeholder="Email..."
-            data={data.email}
+            value={data.email}
             onChange={(e) => handleTextInput(e, 'email')}
           />
         </LineFormStyled>
@@ -44,7 +44,7 @@ const AddStaffModal = (props) => {
           <Input
             type="text"
             placeholder="Password..."
-            data={data.password}
+            value={data.password}
             onChange={(e) => handleTextInput(e, 'password')}
           />
         </LineFormStyled>
