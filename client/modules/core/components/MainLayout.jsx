@@ -9,7 +9,7 @@ class MainLayout extends React.Component {
 
     if(!isLoggedIn)
       history.push('/signin');
-    if (Meteor.user().role === ROLES.ADMIN) {
+    if (Meteor.user() && Meteor.user().role === ROLES.ADMIN) {
       history.push('/admin');
     }
   }

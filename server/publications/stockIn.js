@@ -14,4 +14,18 @@ export default function () {
       }
     ]
   }));
+
+  Meteor.publishComposite('actionStockOut', () => ({
+    find() {
+      return Action.find({ type: 'Stock out' }, { sort: { date: -1 } });
+    },
+    children: [
+      {
+        find(action) {
+          return Items.find({ _id: action.itemId });
+        }
+      }
+    ]
+  }));
+
 }

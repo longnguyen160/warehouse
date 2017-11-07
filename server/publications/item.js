@@ -66,4 +66,23 @@ export default function () {
 
     return Items.find({ name });
   });
+
+  Meteor.publishComposite('getItemStockOut', (name) => ({
+    find() {
+      check(name, String);
+
+      console.log(Items.find({ name }).fetch());
+      return Items.find({ name });
+    },
+    children: [
+      {
+        find(item) {
+          const detail = item.details.filter(detail => detail.warehouseId === Meteor.user().warehouseId)[0];
+          if (detail) {
+            return Boxes.find({_id: {$in: detail.boxId}});
+          }
+        }
+      }
+    ]
+  }));
 }

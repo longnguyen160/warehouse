@@ -16,7 +16,7 @@ export default {
     }
   },
 
-  submitItem({ LocalState }, item, boxes, callback) {
+  stockOutItem({ LocalState }, item, boxes, callback) {
     Meteor.call('action.stockOutItem', item, boxes, (err) => {
       if (err) {
         callback('err');

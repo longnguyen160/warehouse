@@ -123,7 +123,7 @@ export default function () {
       let itemId = '';
       if (itemDetail) {
         itemId = itemDetail._id;
-        if (!itemDetail.details.find(detail => detail.warehouseId === Meteor.user().warehouseId)) {
+        if (itemDetail.details.find(detail => detail.warehouseId === Meteor.user().warehouseId)) {
           let boxesDB = Boxes.find({ _id: { $in: boxes.map(box => box._id) } }).fetch();
           boxesDB = boxes.map((box, index) => {
             boxesDB[index].currentQuantity -= box.currentQuantity;
@@ -135,6 +135,7 @@ export default function () {
                 return detail;
               });
             }
+            Boxes.update({ _id: box._id }, { $set: box });
             return boxesDB;
           });
         }
@@ -145,7 +146,7 @@ export default function () {
         staffId: Meteor.userId(),
         itemId: itemId,
         quantity: item.quantity,
-        details: status,
+        details: boxes,
         type: 'Stock out'
       });
     }

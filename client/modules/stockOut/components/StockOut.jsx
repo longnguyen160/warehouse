@@ -28,6 +28,15 @@ export default class StockOut extends Component {
     scroll.addEventListener('scroll', this.handleScroll);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { error } = this.state;
+    const { itemData } = nextProps;
+
+    if (itemData && error === 'Item is not found') {
+      this.setState({ error: null });
+    }
+  }
+
   componentDidUpdate() {
     const scroll = ReactDOM.findDOMNode(this.scroll);
     scroll.scrollTop = scroll.scrollHeight;
@@ -91,14 +100,14 @@ export default class StockOut extends Component {
   };
 
   handleSubmitItem = () => {
-    const { submitItem, boxes } = this.props;
+    const { stockOutItem, boxes } = this.props;
     const { item, quantity } = this.state;
     const itemData = {
       item,
       quantity,
     };
 
-    submitItem(itemData, boxes, (err) => {
+    stockOutItem(itemData, boxes, (err) => {
       if (!err) {
         this.handleModal();
       }
@@ -118,9 +127,6 @@ export default class StockOut extends Component {
       boxes,
       itemData
     } = this.props;
-    if (itemData && error === 'Item is not found') {
-      this.setState({ error: null });
-    }
 
     return (
       <FormStyled>

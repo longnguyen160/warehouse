@@ -85,9 +85,9 @@ const StockOutModal = (props) => {
           {
             boxes.map((element, index) =>
               <span key={element._id}>
-                <Span>{element.boxName}</Span>
+                <Span>{element.name}</Span>
                 <Span current='empty'>-</Span>
-                <Span max>{element.number}</Span>
+                <Span max>{element.currentQuantity}</Span>
               </span>
             )
           }
