@@ -3,9 +3,6 @@ import DashBoard from '../components/DashBoard';
 
 export const composer = ({ context, clearErrors }, onData) => {
 
-
-
-  
   onData(null, {  });
 
   return clearErrors;

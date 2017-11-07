@@ -9,7 +9,10 @@ import AdminLayout from './containers/AdminLayout';
 import SignIn from '../account/containers/SignIn';
 import HomePage from './components/HomePage';
 import CheckItems from '../checkItems/containers/CheckItems';
+import AdminDashBoard from '../admin/components/DashBoard';
 import StockIn from '../stockIn/containers/StockIn';
+import StaffManagement from '../staffs/containers/StaffManagement';
+import Report from '../reports/containers/Report';
 
 export default function (injectDeps) {
   const MainLayoutCtx = injectDeps(MainLayout);
@@ -20,12 +23,31 @@ export default function (injectDeps) {
     ReactDOM.render((
       <Router history={history}>
         <Switch>
-          <Route exact path="/signin" component={SignInCtx}/>
+          <Route exact path="/signin" component={SignInCtx} />
           <Route
             path="/admin"
             render={() => (
               <AdminLayoutCtx history={history}>
                 <Switch>
+                  <Route
+                    exact
+                    path='/admin'
+                    render={() => (
+                      <AdminDashBoard history={history} />
+                    )}
+                  />
+                  <Route
+                    path='/admin/staffs'
+                    render={() => (
+                      <StaffManagement history={history} />
+                    )}
+                  />
+                  <Route
+                    path='/admin/reports'
+                    render={() => (
+                      <Report history={history} />
+                    )}
+                  />
                 </Switch>
               </AdminLayoutCtx>
             )}
@@ -38,7 +60,7 @@ export default function (injectDeps) {
                   <Route
                     path='/checkItems'
                     render={() => (
-                      <CheckItems history={history}/>
+                      <CheckItems history={history} />
                     )}
                   />
                   <Route

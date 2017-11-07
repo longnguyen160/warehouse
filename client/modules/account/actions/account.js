@@ -15,20 +15,4 @@ export default {
     });
   },
 
-  createUser({ Meteor, LocalState }, data, history, callback) {
-    Meteor.call('account.createUser', data, (err) => {
-      if (err) {
-        callback('error');
-        return LocalState.set('SIGNUP_ERROR', err.reason);
-      }
-      Meteor.loginWithPassword(data.email, data.password, (error) => {
-        if (error) {
-          callback('error');
-          return LocalState.set('SIGNUP_ERROR', err.reason);
-        }
-        return history.push('/');
-      });
-    });
-  }
-
 }
