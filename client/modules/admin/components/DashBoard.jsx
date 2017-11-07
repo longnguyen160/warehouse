@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Link } from 'react-router-dom';
 
 import {
   FormStyled,
@@ -18,17 +18,19 @@ export default class DashBoard extends React.Component {
 
   render() {
     return (
-      <FormStyled>
-        <LineFormStyled>
-          <Link>
-            <Button>
-            </Button>
+      <FormStyled homepage mobile>
+        <LineFormStyled marginBottom alignCenter>
+          <Link to="/admin/staffs">
+            <Button admin hasBorder dashboard>
+              Staffs Management
+          </Button>
           </Link>
         </LineFormStyled>
-        <LineFormStyled>
-          <Link>
-            <Button>
-            </Button>
+        <LineFormStyled marginBottom alignCenter>
+          <Link to="/admin/reports">
+            <Button admin hasBorder dashboard>
+              Reports
+        </Button>
           </Link>
         </LineFormStyled>
       </FormStyled>

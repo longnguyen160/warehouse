@@ -48,7 +48,6 @@ export const Button = styled.button`
     transition: all 0.3s ease;
     cursor: pointer;
     color: #026a95;
-    border: 2px solid #026a95;
     justify-content: center;
     i{
       margin-right: 5px;
@@ -81,7 +80,7 @@ export const Button = styled.button`
       color: #fff;
     }
   `}
-  ${props => props.remove && css`
+  ${props => props.admin && css`
     border: 2px solid #ff3000;
     color: #ff3000;
     &:hover {

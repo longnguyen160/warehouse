@@ -7,6 +7,8 @@ import accountModule from './modules/account';
 import adminModule from './modules/admin';
 import checkItemsModule from './modules/checkItems';
 import stockInModule from './modules/stockIn';
+import staffModule from './modules/staffs';
+import reportModule from './modules/reports';
 // init context
 const context = initContext();
 
@@ -18,4 +20,6 @@ app.loadModule(accountModule);
 app.loadModule(adminModule);
 app.loadModule(checkItemsModule);
 app.loadModule(stockInModule);
+app.loadModule(staffModule);
+app.loadModule(reportModule);
 app.init();

@@ -3,6 +3,7 @@ import position from './position';
 import item from './item';
 import series from './series';
 import stockIn from './stockIn';
+import warehouses from './warehouse';
 import shelf from './shelf';
 
 export default function() {
@@ -11,5 +12,6 @@ export default function() {
   item(),
   series(),
   stockIn(),
+  warehouses(),
   shelf()
 }
