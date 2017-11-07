@@ -9,6 +9,7 @@ import checkItemsModule from './modules/checkItems';
 import stockInModule from './modules/stockIn';
 import staffModule from './modules/staffs';
 import reportModule from './modules/reports';
+import stockOutModule from './modules/stockOut';
 // init context
 const context = initContext();
 
@@ -22,4 +23,5 @@ app.loadModule(checkItemsModule);
 app.loadModule(stockInModule);
 app.loadModule(staffModule);
 app.loadModule(reportModule);
+app.loadModule(stockOutModule);
 app.init();

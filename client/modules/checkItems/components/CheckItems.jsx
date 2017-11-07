@@ -31,7 +31,7 @@ export default class CheckItems extends React.Component {
     const searchTerm = this.search.value.trim();
     const filter = {
       $or: [
-        { _id: { $regex: searchTerm, $options: 'i' } },
+        { code: { $regex: searchTerm, $options: 'i' } },
         { name: { $regex: searchTerm, $options: 'i' } },
       ],
     };

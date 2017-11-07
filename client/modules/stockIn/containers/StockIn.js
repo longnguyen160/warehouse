@@ -83,7 +83,7 @@ export const composer = ({ context, clearErrors }, onData) => {
   }
 
   if (Meteor.subscribe('getInsertedItem').ready()) {
-    const action = Collections.Action.find({}, { sort: { date: -1 } }).fetch();
+    const action = Collections.Action.find({ type: 'Stock In' }, { sort: { date: -1 } }).fetch();
     let date = '';
     const itemIds = action.map(element => element.itemId);
     const items = itemIds.map(itemId =>

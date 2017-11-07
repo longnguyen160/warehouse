@@ -11,6 +11,7 @@ import HomePage from './components/HomePage';
 import CheckItems from '../checkItems/containers/CheckItems';
 import AdminDashBoard from '../admin/components/DashBoard';
 import StockIn from '../stockIn/containers/StockIn';
+import StockOut from '../stockOut/containers/StockOut';
 import StaffManagement from '../staffs/containers/StaffManagement';
 import Report from '../reports/containers/Report';
 
@@ -74,6 +75,12 @@ export default function (injectDeps) {
                     path='/stockIn'
                     render={() =>
                       <StockIn />
+                    }
+                  />
+                  <Route
+                    path='/stockOut'
+                    render={() =>
+                      <StockOut />
                     }
                   />
                 </Switch>

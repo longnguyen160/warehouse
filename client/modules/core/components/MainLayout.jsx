@@ -1,5 +1,6 @@
 import React from 'react';
 import TopNavBar from '../containers/TopNavBar';
+import { ROLES } from '../../../../lib/enums';
 
 class MainLayout extends React.Component {
 
@@ -8,6 +9,9 @@ class MainLayout extends React.Component {
 
     if(!isLoggedIn)
       history.push('/signin');
+    if (Meteor.user().role === ROLES.ADMIN) {
+      history.push('/admin');
+    }
   }
 
   componentWillMount() {

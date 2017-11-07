@@ -72,6 +72,9 @@ export const Button = styled.button`
   ${props => props.right && css`
     margin: 0;
   `}
+  ${props => props.stockOut && css`
+    width: 135px;
+  `}
   ${props => props.edit && css`
     border: 2px solid #00c056;
     color: #00c056;

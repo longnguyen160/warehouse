@@ -113,6 +113,41 @@ export default function () {
         details: status,
         type: 'Stock In'
       });
+    },
+
+    'action.stockOutItem'(item, boxes) {
+      check(item, Object);
+      check(boxes, [Object]);
+
+      let itemDetail = Items.findOne({ name: item.item });
+      let itemId = '';
+      if (itemDetail) {
+        itemId = itemDetail._id;
+        if (!itemDetail.details.find(detail => detail.warehouseId === Meteor.user().warehouseId)) {
+          let boxesDB = Boxes.find({ _id: { $in: boxes.map(box => box._id) } }).fetch();
+          boxesDB = boxes.map((box, index) => {
+            boxesDB[index].currentQuantity -= box.currentQuantity;
+            if (boxesDB[index].currentQuantity === 0) {
+              itemDetail.details = itemDetail.details.map(detail => {
+                if (detail.warehouseId === Meteor.user().warehouseId) {
+                  detail.boxId = detail.boxId.filter(id => id !== boxesDB[index]._id);
+                }
+                return detail;
+              });
+            }
+            return boxesDB;
+          });
+        }
+        Items.update({ _id: itemDetail._id }, { $set: itemDetail });
+      }
+      Action.insert({
+        date: new Date(),
+        staffId: Meteor.userId(),
+        itemId: itemId,
+        quantity: item.quantity,
+        details: status,
+        type: 'Stock out'
+      });
     }
   });
 }

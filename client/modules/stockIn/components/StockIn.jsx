@@ -386,7 +386,7 @@ export default class StockIn extends Component {
         />
         <PageStyled chatBox>
           <FormBlockStyled show fullWidth>
-            <FormGroupStyled>
+            <FormGroupStyled chatBox>
               <PageCustomStyled
                 chatBox
                 ref={(element) => this.scroll = element}
