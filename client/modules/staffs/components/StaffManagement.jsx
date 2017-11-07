@@ -1,5 +1,17 @@
 import React, { Component } from 'react';
 import AddStaffModal from './AddStaffModal';
+import {
+  StaffStyled,
+  FilterStyled,
+  ListStyled,
+  ItemStyled,
+  NameStyled,
+  WarehouseStyled,
+  ButtonAddStyled,
+  ButtonRemoveStyled,
+  DetailStyled,
+  ActionStyled
+} from '../stylesheets/StaffStyled';
 
 export default class Staff extends React.Component {
   constructor(props) {
@@ -97,7 +109,7 @@ export default class Staff extends React.Component {
     const { userList, isOpen, data } = this.state;
     const { warehouseList } = this.props;
     return (
-      <div>
+      <StaffStyled>
         <AddStaffModal
           isOpen={isOpen}
           onClose={this.handleModal}
@@ -107,24 +119,29 @@ export default class Staff extends React.Component {
           handleTextInput={this.handleTextInput}
           data={data}
         />
-        <input type="text" value={this.state.inputString} placeholder="Name of Warehouse or Staff..." onChange={this.handleInput.bind(this)} />
-        <button onClick={this.handleModal}>+</button>
-        {userList.map((user, index) => (
-          <div key={index}>
-            <div>
-              <div>
-                {user.name}
-              </div>
-              <div>
-                {user.warehouseName}
-              </div>
-            </div>
-            <div>
-              <button onClick={(e) => this.deleteUser(user.userId, e)}>x</button>
-            </div>
-          </div>
-        ))}
-      </div>
+        <FilterStyled>
+          <input type="text" value={this.state.inputString} placeholder="Name of Warehouse or Staff..." onChange={this.handleInput.bind(this)} />
+          <ButtonAddStyled onClick={this.handleModal}>+</ButtonAddStyled>
+        </FilterStyled>
+        <ListStyled>
+          {userList.map((user, index) => (
+            <ItemStyled key={index}>
+              <DetailStyled>
+                <NameStyled>
+                  Staff's Name: {user.name}
+                </NameStyled>
+                <WarehouseStyled>
+                  Warehouse: {user.warehouseName}
+                </WarehouseStyled>
+              </DetailStyled>
+              <ActionStyled>
+                <ButtonRemoveStyled onClick={(e) => this.deleteUser(user.userId, e)}>x</ButtonRemoveStyled>
+              </ActionStyled>
+            </ItemStyled>
+          ))}
+        </ListStyled>
+
+      </StaffStyled>
     );
   }
 }

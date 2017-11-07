@@ -22,6 +22,15 @@ export const HeaderMainItemsStyled = styled.section`
   padding: 0 15px;
   align-items: center;
   cursor: pointer;
+  ${props => props.admin && css`
+    justify-content: center;
+    .fa-angle-left{
+      font-size: 30px;
+    }
+    .fa-bars{
+      font-size: 30px;
+    }
+  `}
   ${props => props.isHidden && css`
     visibility: hidden;
   `};

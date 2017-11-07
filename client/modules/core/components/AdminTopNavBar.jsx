@@ -60,17 +60,17 @@ class AdminTopNavBar extends Component {
       <HeaderMainStyled admin>
         <HeaderMainBlockStyled>
           <HeaderMainItemsStyled
-            mobileMenu
+            admin
             isHidden={history.location.pathname === '/admin'}
             onClick={this.goBack}
           >
             <i className="fa fa-angle-left" />
           </HeaderMainItemsStyled>
-          <HeaderMainItemsStyled general mobileMenu center admin>
+          <HeaderMainItemsStyled general center admin>
             <span>Admin</span>
           </HeaderMainItemsStyled>
           <HeaderMainItemsStyled
-            mobileMenu
+            admin
             onClick={this.openMenu}
           >
             <i className="fa fa-bars" />
